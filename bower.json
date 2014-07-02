@@ -1,0 +1,26 @@
+{
+  "name": "ventus",
+  "version": "0.1.0",
+  "homepage": "https://github.com/eyeos2/Ventus",
+  "authors": [
+    "Ramon Lamana",
+    "eyeOs"
+  ],
+  "description": "HTML5 Window Manager",
+  "main": "build/ventus.js",
+  "keywords": [
+    "CSS3",
+    "HTML5",
+    "Javascript",
+    "WindowManager"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
