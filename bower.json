@@ -7,7 +7,11 @@
     "eyeOs"
   ],
   "description": "HTML5 Window Manager",
-  "main": "build/ventus.js",
+  "main": [
+	  "build/ventus.js",
+	  "build/ventus.css",
+	  "vendor/handlebars.js"
+  ],
   "keywords": [
     "CSS3",
     "HTML5",
