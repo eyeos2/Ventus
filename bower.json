@@ -8,9 +8,9 @@
   ],
   "description": "HTML5 Window Manager",
   "main": [
-	  "build/ventus.js",
 	  "build/ventus.css",
-	  "vendor/handlebars.js"
+	  "vendor/handlebars.js",
+	  "build/ventus.js"
   ],
   "keywords": [
     "CSS3",
