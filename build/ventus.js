@@ -11,7 +11,6 @@
     }
 }(this, function ($, Handlebars) {
 
-
 /**
  * almond 0.1.2 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -688,6 +687,7 @@ templates['window.tpl'] = template(function (Handlebars,depth0,helpers,partials,
   return buffer;});
 });
 
+
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
@@ -730,6 +730,7 @@ define('less',[],function() {
 
     return plugin;
 });
+
 
 
 /**
@@ -1241,6 +1242,7 @@ function(Emitter, View, WindowTemplate) {
 	return Window;
 });
 
+
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
@@ -1286,6 +1288,7 @@ define("Underscore", (function (global) {
         return ret || global._;
     };
 }(this)));
+
 
 /**
  * Ventus
@@ -1414,6 +1417,7 @@ define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], func
 	return ExposeMode;
 });
 
+
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
@@ -1500,9 +1504,10 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 	var ExposeMode = require('ventus/wm/modes/expose');
 	var FullscreenMode = require('ventus/wm/modes/fullscreen');
 
-	var WindowManager = function () {
+	var WindowManager = function ($baseElem) {
+		$baseElem = $baseElem || $(document.body);
 		this.el = view('<div class="wm-space"><div class="wm-overlay" /></div>');
-		$(document.body).prepend(this.el);
+		$baseElem.prepend(this.el);
 
 		this.$overlay = this.el.find('.wm-overlay');
 		this.$overlay.css('z-index', this._baseZ-1);
@@ -1721,6 +1726,7 @@ define('ventus',['require','ventus/wm/windowmanager','ventus/wm/window'],functio
 		Window: require('ventus/wm/window')
 	};
 });
+
     // Register in the values from the outer closure for common dependencies
     // as local almond modules
     define('$', function () {
