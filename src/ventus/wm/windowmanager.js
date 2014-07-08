@@ -13,9 +13,10 @@ define(function(require) {
 	var ExposeMode = require('ventus/wm/modes/expose');
 	var FullscreenMode = require('ventus/wm/modes/fullscreen');
 
-	var WindowManager = function () {
+	var WindowManager = function ($baseElem) {
+		$baseElem = $baseElem || $(document.body);
 		this.el = view('<div class="wm-space"><div class="wm-overlay" /></div>');
-		$(document.body).prepend(this.el);
+		$baseElem.prepend(this.el);
 
 		this.$overlay = this.el.find('.wm-overlay');
 		this.$overlay.css('z-index', this._baseZ-1);
