@@ -1,6 +1,6 @@
 {
   "name": "ventus",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/eyeos2/Ventus",
   "authors": [
     "Ramon Lamana",
@@ -8,9 +8,9 @@
   ],
   "description": "HTML5 Window Manager",
   "main": [
-	  "build/ventus.css",
-	  "vendor/handlebars.js",
-	  "build/ventus.js"
+    "build/ventus.css",
+    "vendor/handlebars.js",
+    "build/ventus.js"
   ],
   "keywords": [
     "CSS3",
