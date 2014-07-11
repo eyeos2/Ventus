@@ -53,6 +53,6 @@ ${builddir}:
 install:
 	npm install requirejs
 	npm install less
-	npm install handlebars
+	npm install handlebars@v1.0.10
 
 
