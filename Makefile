@@ -51,8 +51,4 @@ ${builddir}:
 	@mkdir -p ${builddir}
 
 install:
-	npm install requirejs
-	npm install less
-	npm install handlebars@v1.0.10
-
-
+	npm install -g requirejs less handlebars@v1.0.10
