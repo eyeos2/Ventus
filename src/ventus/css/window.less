@@ -71,6 +71,7 @@
 @time: 0.5s;
 
 @minheight: 60px;
+@border-size: 1px;
 
 .wm-window {
 	opacity: 0.98;
@@ -237,27 +238,27 @@
 	}
 	.wm-window-border.top {
 		.wm-window-border;
-		height: 1px;
+		height: @border-size;
 		width: 100%;
 		cursor: ns-resize;
 	}
 	.wm-window-border.left {
 		.wm-window-border;
 		height: 100%;
-		width: 1px;
+		width: @border-size;
 		cursor: ew-resize;
 	}
 	.wm-window-border.right {
 		.wm-window-border;
 		height: 100%;
-		width: 1px;
+		width: @border-size;
 		cursor: ew-resize;
 	}
 	.wm-window-border.bottom {
 		.wm-window-border;
 		position: relative;
 		top: -7px;
-		height: 1px;
+		height: @border-size;
 		width: 100%;
 		cursor: ns-resize;
 	}
