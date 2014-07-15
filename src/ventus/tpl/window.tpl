@@ -14,6 +14,7 @@
 
             <section class="wm-content"></section>
 
+            <button class="wm-resize bottom-left">&nbsp;</button>
             <button class="wm-resize">&nbsp;</button>
         </div>
 	    <div class="wm-window-border right wm-resize"></div>
@@ -22,3 +23,4 @@
 	<div class="wm-window-border bottom wm-resize"></div>
 	<div class="wm-window-overlay"></div>
 </div>
+
