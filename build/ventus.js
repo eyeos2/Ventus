@@ -671,22 +671,72 @@ define('tpl',['require'],function(require) {
 define('ventus/tpl/window.tpl',['handlebars'], function(Handlebars) {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['window.tpl'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression;
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
   buffer += "<div class=\"wm-window ";
-  foundHelper = helpers.classname;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.classname; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\" >\n	<div class=\"wm-window-box\">\n		<header class=\"wm-window-title\" unselectable=\"on\">\n			<h1 unselectable=\"on\">";
-  foundHelper = helpers.title;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</h1>\n			<div class=\"wm-button-group\">\n				<button class=\"wm-minimize\">&nbsp;</button>\n				<button class=\"wm-maximize\">&nbsp;</button>\n				<button class=\"wm-close\">&nbsp;</button>\n			</div>\n		</header>\n\n		<section class=\"wm-content\"></section>\n\n		<button class=\"wm-resize\">&nbsp;</button>\n	</div>\n	<div class=\"wm-window-overlay\"></div>\n</div>\n";
-  return buffer;});
+  if (stack1 = helpers.classname) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.classname; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" >\n	<div class=\"wm-window-border top wm-resize\"></div>\n	<div class=\"wm-container\">\n	    <div class=\"wm-window-border left  wm-resize\"></div>\n        <div class=\"wm-window-box\">\n            <header class=\"wm-window-title\" unselectable=\"on\">\n                <h1 unselectable=\"on\">";
+  if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</h1>\n                <div class=\"wm-button-group\">\n                    <button class=\"wm-minimize\">&nbsp;</button>\n                    <button class=\"wm-maximize\">&nbsp;</button>\n                    <button class=\"wm-close\">&nbsp;</button>\n                </div>\n            </header>\n\n            <section class=\"wm-content\"></section>\n\n            <button class=\"wm-resize top-right\">&nbsp;</button>\n            <button class=\"wm-resize top-left\">&nbsp;</button>\n            <button class=\"wm-resize bottom-left\">&nbsp;</button>\n            <button class=\"wm-resize\">&nbsp;</button>\n        </div>\n	    <div class=\"wm-window-border right wm-resize\"></div>\n    </div>\n\n	<div class=\"wm-window-border bottom wm-resize\"></div>\n	<div class=\"wm-window-overlay\"></div>\n</div>\n\n";
+  return buffer;
+  });
 });
 
+
+define('ventus/core/sideresizers/topResizer',[], function() {
+	var topResizer = function (window, initialEvent) {
+		this.window = window;
+		this.initialSize = {
+			width: window.width,
+			height: window.height + initialEvent.originalEvent.pageY
+		};
+	};
+
+	topResizer.prototype.resize = function(finalEvent) {
+		this.window.resize(
+			this.initialSize.width,
+			this.initialSize.height - finalEvent.originalEvent.pageY
+		);
+	};
+
+	return topResizer;
+});
+
+define('ventus/core/resizer',[
+	'ventus/core/sideresizers/topResizer'
+],
+
+function(topResizer) {
+	var sideResizerFactory = {
+		map: {
+			'top': topResizer
+		},
+
+		getInstance: function(type, window, event) {
+			return new this.map[type](window, event);
+		}
+	};
+
+
+	var Resizer =  function (window, event, type) {
+		this.window = window;
+		this.event = event;
+		this.sideResizer = sideResizerFactory.getInstance(type, window, event);
+	};
+
+	Resizer.prototype.resize = function(event) {
+		this.sideResizer.resize(event);
+	};
+
+	return Resizer;
+});
 
 /**
  * Ventus
@@ -742,9 +792,10 @@ define('ventus/wm/window',[
 	'ventus/core/emitter',
 	'ventus/core/view',
 	'tpl!ventus/tpl/window',
+	'ventus/core/resizer',
 	'less!ventus/css/window'
 ],
-function(Emitter, View, WindowTemplate) {
+function(Emitter, View, WindowTemplate, Resizer) {
 	
 
 	var Window = function (options) {
@@ -887,7 +938,6 @@ function(Emitter, View, WindowTemplate) {
 
 				'button.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-
 					this._resizing = {
 						width: this.width - e.originalEvent.pageX,
 						height: this.height - e.originalEvent.pageY
@@ -896,22 +946,204 @@ function(Emitter, View, WindowTemplate) {
 					this.el.addClass('resizing');
 
 					e.preventDefault();
+				},
+
+				'button.top-right.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+					this._resizing = {
+						"top-right": true,
+						width: this.width - e.originalEvent.pageX,
+						height: this.height + e.originalEvent.pageY
+					};
+
+					this._moving = this.toLocal({
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
+					});
+					this._moving['top-right'] = true;
+
+					this.el.addClass('resizing');
+
+					e.preventDefault();
+				},
+
+				'button.top-left.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+					this._resizing = {
+						"top-left": true,
+						width: this.width + e.originalEvent.pageX,
+						height: this.height + e.originalEvent.pageY
+					};
+
+					this._moving = this.toLocal({
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
+					});
+					this._moving['top-left'] = true;
+
+					this.el.addClass('resizing');
+
+					e.preventDefault();
+				},
+
+				'button.bottom-left.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+					this._resizing = {
+						"bottom-left": true,
+						width: this.width + e.originalEvent.pageX,
+						height: this.height - e.originalEvent.pageY
+					};
+
+					this._moving = this.toLocal({
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
+					});
+					this._moving['bottom-left'] = true;
+
+					this.el.addClass('resizing');
+
+					e.preventDefault();
+				},
+
+				'.wm-window-border.left.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+					this._resizing = {
+						left: true,
+						width: this.width + e.originalEvent.pageX,
+						height: this.height
+					};
+
+					this._moving = this.toLocal({
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
+					});
+
+					this.el.addClass('resizing');
+
+					e.preventDefault();
+				},
+				'.wm-window-border.top.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+//					this._resizing = {
+//						top: true,
+//						width: this.width,
+//						height: this.height + e.originalEvent.pageY
+//					};
+					this._resizer = new Resizer(this, e, 'top');
+
+					this._moving = this.toLocal({
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
+					});
+
+					this.el.addClass('resizing');
+
+					e.preventDefault();
+				},
+				'.wm-window-border.bottom.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+					this._resizing = {
+						bottom: true,
+						width: this.width,
+						height: this.height - e.originalEvent.pageY
+					};
+					this.el.addClass('resizing');
+
+					e.preventDefault();
+				},
+
+				'.wm-window-border.right.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+					this._resizing = {
+						right: true,
+						width: this.width - e.originalEvent.pageX,
+						height: this.height
+					};
+					this.el.addClass('resizing');
+
+					e.preventDefault();
 				}
 			},
 
 			space: {
 				'mousemove': function(e) {
-					if (this._moving)
-						this.move(
-							e.originalEvent.pageX - this._moving.x,
-							e.originalEvent.pageY - this._moving.y
-						);
+					if (this._moving) {
+						if (this._moving['bottom-left']) {
+							this.move(
+								e.originalEvent.pageX - this._moving.x,
+								this._resizing.y
+							);
+						} else if (this._moving['top-right']) {
+							this.move(
+								this._resizing.x,
+								e.originalEvent.pageY - this._moving.y
+							);
+						} else if (this._moving['top-left']) {
+							this.move(
+								e.originalEvent.pageX - this._moving.x,
+								e.originalEvent.pageY - this._moving.y
+							);
+						} else {
+							this.move(
+								e.originalEvent.pageX - this._moving.x,
+								e.originalEvent.pageY - this._moving.y
+							);
+						}
+					}
 
-					if(this._resizing)
-						this.resize(
-							e.originalEvent.pageX + this._resizing.width,
-							e.originalEvent.pageY + this._resizing.height
-						);
+					if(this._resizing){
+						if(this._resizing.left) {
+							this.resize(
+								this._resizing.width - e.originalEvent.pageX,
+								this._resizing.height
+							);
+						}else if(this._resizing.bottom){
+							this.resize(
+								this._resizing.width,
+								e.originalEvent.pageY + this._resizing.height
+							);
+						}else if(this._resizing.top){
+							this.resize(
+								this._resizing.width,
+								this._resizing.height - e.originalEvent.pageY
+							);
+						}else if(this._resizing.right){
+							this.resize(
+								e.originalEvent.pageX + this._resizing.width,
+								this._resizing.height
+							);
+						}else if(this._resizing["bottom-left"]){
+							this.resize(
+								this._resizing.width - e.originalEvent.pageX,
+								e.originalEvent.pageY + this._resizing.height
+							);
+						}else if(this._resizing["top-right"]){
+							this.resize(
+								e.originalEvent.pageX + this._resizing.width,
+								this._resizing.height - e.originalEvent.pageY
+							);
+						}else if(this._resizing["top-left"]){
+							this.resize(
+								this._resizing.width - e.originalEvent.pageX,
+								this._resizing.height - e.originalEvent.pageY
+							);
+						}else{
+							this.resize(
+								e.originalEvent.pageX + this._resizing.width,
+								e.originalEvent.pageY + this._resizing.height
+							);
+						}
+					}
+					if (this._resizer) {
+						this._resizer.resize(e);
+					}
 				},
 
 				'mouseup': function() {
@@ -920,10 +1152,11 @@ function(Emitter, View, WindowTemplate) {
 						this._moving = null;
 					}
 
-					if (this._resizing) {
+					if (this._resizing || this._resizer) {
 						this.el.removeClass('resizing');
 						this._restore = null;
 						this._resizing = null;
+						this._resizer = null;
 					}
 				}
 			}
