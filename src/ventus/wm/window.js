@@ -163,6 +163,46 @@ function(Emitter, View, WindowTemplate) {
 					e.preventDefault();
 				},
 
+				'button.top-right.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+					this._resizing = {
+						"top-right": true,
+						width: this.width - e.originalEvent.pageX,
+						height: this.height + e.originalEvent.pageY
+					};
+
+					this._moving = this.toLocal({
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
+					});
+					this._moving['top-right'] = true;
+
+					this.el.addClass('resizing');
+
+					e.preventDefault();
+				},
+
+				'button.top-left.wm-resize mousedown': function(e) {
+					if(!this.enabled || !this.resizable) return;
+
+					this._resizing = {
+						"top-left": true,
+						width: this.width + e.originalEvent.pageX,
+						height: this.height + e.originalEvent.pageY
+					};
+
+					this._moving = this.toLocal({
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
+					});
+					this._moving['top-left'] = true;
+
+					this.el.addClass('resizing');
+
+					e.preventDefault();
+				},
+
 				'button.bottom-left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
@@ -171,11 +211,12 @@ function(Emitter, View, WindowTemplate) {
 						width: this.width + e.originalEvent.pageX,
 						height: this.height - e.originalEvent.pageY
 					};
-//
-//					this._moving = this.toLocal({
-//						x: e.originalEvent.pageX,
-//						y: e.originalEvent.pageY
-//					});
+
+					this._moving = this.toLocal({
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
+					});
+					this._moving['bottom-left'] = true;
 
 					this.el.addClass('resizing');
 
@@ -247,11 +288,29 @@ function(Emitter, View, WindowTemplate) {
 
 			space: {
 				'mousemove': function(e) {
-					if (this._moving)
-						this.move(
-							e.originalEvent.pageX - this._moving.x,
-							e.originalEvent.pageY - this._moving.y
-						);
+					if (this._moving) {
+						if (this._moving['bottom-left']) {
+							this.move(
+								e.originalEvent.pageX - this._moving.x,
+								this._resizing.y
+							);
+						} else if (this._moving['top-right']) {
+							this.move(
+								this._resizing.x,
+								e.originalEvent.pageY - this._moving.y
+							);
+						} else if (this._moving['top-left']) {
+							this.move(
+								e.originalEvent.pageX - this._moving.x,
+								e.originalEvent.pageY - this._moving.y
+							);
+						} else {
+							this.move(
+								e.originalEvent.pageX - this._moving.x,
+								e.originalEvent.pageY - this._moving.y
+							);
+						}
+					}
 
 					if(this._resizing){
 						if(this._resizing.left) {
@@ -278,6 +337,16 @@ function(Emitter, View, WindowTemplate) {
 							this.resize(
 								this._resizing.width - e.originalEvent.pageX,
 								e.originalEvent.pageY + this._resizing.height
+							);
+						}else if(this._resizing["top-right"]){
+							this.resize(
+								e.originalEvent.pageX + this._resizing.width,
+								this._resizing.height - e.originalEvent.pageY
+							);
+						}else if(this._resizing["top-left"]){
+							this.resize(
+								this._resizing.width - e.originalEvent.pageX,
+								this._resizing.height - e.originalEvent.pageY
 							);
 						}else{
 							this.resize(

@@ -236,6 +236,28 @@
 				-o-transform: rotate(@rotation);
 				-ms-transform: rotate(@rotation);
 			}
+
+            &.top-left {
+                left: 4px;
+                top: 2px;
+                cursor: nw-resize;
+                @nw-rotation: 180deg;
+                -webkit-transform: rotate(@nw-rotation);
+                -moz-transform: rotate(@nw-rotation);
+                -o-transform: rotate(@nw-rotation);
+                -ms-transform: rotate(@nw-rotation);
+            }
+
+            &.top-right {
+                right: 4px;
+                top: 2px;
+                cursor: ne-resize;
+                @ne-rotation: 270deg;
+                -webkit-transform: rotate(@ne-rotation);
+                -moz-transform: rotate(@ne-rotation);
+                -o-transform: rotate(@ne-rotation);
+                -ms-transform: rotate(@ne-rotation);
+            }
 		}
 	}
 

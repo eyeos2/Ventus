@@ -14,6 +14,8 @@
 
             <section class="wm-content"></section>
 
+            <button class="wm-resize top-right">&nbsp;</button>
+            <button class="wm-resize top-left">&nbsp;</button>
             <button class="wm-resize bottom-left">&nbsp;</button>
             <button class="wm-resize">&nbsp;</button>
         </div>
