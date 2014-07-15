@@ -15,6 +15,9 @@ targets = build.js
 
 all: less handlebars debug release
 
+tests: handlebars
+	npm test
+
 debug: ${builddir} ${targets}
 	r.js -o build.js debug=true optimize=none out=${builddir}/${buildname}.js
 
@@ -52,3 +55,4 @@ ${builddir}:
 
 install:
 	npm install -g requirejs less handlebars@v1.0.10
+	npm install
