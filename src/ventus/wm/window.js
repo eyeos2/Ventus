@@ -153,7 +153,6 @@ function(Emitter, View, WindowTemplate, Resizer) {
 
 				'button.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-					var resizer = new Resizer();
 					this._resizing = {
 						width: this.width - e.originalEvent.pageX,
 						height: this.height - e.originalEvent.pageY
