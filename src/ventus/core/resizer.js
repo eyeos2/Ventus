@@ -19,10 +19,11 @@ function(topResizer) {
 		this.window = window;
 		this.event = event;
 		this.sideResizer = sideResizerFactory.getInstance(type, window, event);
-	}
+	};
 
 	Resizer.prototype.resize = function(event) {
 		this.sideResizer.resize(event);
 	};
+
 	return Resizer;
 });

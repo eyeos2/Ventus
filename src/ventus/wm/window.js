@@ -351,14 +351,14 @@ function(Emitter, View, WindowTemplate, Resizer) {
 								this._resizing.height - e.originalEvent.pageY
 							);
 						}else{
-							if (this._resizer) {
-								this._resizer.resize(e);
-							}
 							this.resize(
 								e.originalEvent.pageX + this._resizing.width,
 								e.originalEvent.pageY + this._resizing.height
 							);
 						}
+					}
+					if (this._resizer) {
+						this._resizer.resize(e);
 					}
 				},
 
@@ -368,10 +368,11 @@ function(Emitter, View, WindowTemplate, Resizer) {
 						this._moving = null;
 					}
 
-					if (this._resizing) {
+					if (this._resizing || this._resizer) {
 						this.el.removeClass('resizing');
 						this._restore = null;
 						this._resizing = null;
+						this._resizer = null;
 					}
 				}
 			}
