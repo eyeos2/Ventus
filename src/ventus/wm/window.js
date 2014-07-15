@@ -7,9 +7,10 @@ define([
 	'ventus/core/emitter',
 	'ventus/core/view',
 	'tpl!ventus/tpl/window',
+	'ventus/core/resizer',
 	'less!ventus/css/window'
 ],
-function(Emitter, View, WindowTemplate) {
+function(Emitter, View, WindowTemplate, Resizer) {
 	'use strict';
 
 	var Window = function (options) {
@@ -152,7 +153,7 @@ function(Emitter, View, WindowTemplate) {
 
 				'button.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-
+					var resizer = new Resizer();
 					this._resizing = {
 						width: this.width - e.originalEvent.pageX,
 						height: this.height - e.originalEvent.pageY
@@ -244,11 +245,12 @@ function(Emitter, View, WindowTemplate) {
 				'.wm-window-border.top.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						top: true,
-						width: this.width,
-						height: this.height + e.originalEvent.pageY
-					};
+//					this._resizing = {
+//						top: true,
+//						width: this.width,
+//						height: this.height + e.originalEvent.pageY
+//					};
+					this._resizer = new Resizer(this, e, 'top');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
@@ -349,6 +351,9 @@ function(Emitter, View, WindowTemplate) {
 								this._resizing.height - e.originalEvent.pageY
 							);
 						}else{
+							if (this._resizer) {
+								this._resizer.resize(e);
+							}
 							this.resize(
 								e.originalEvent.pageX + this._resizing.width,
 								e.originalEvent.pageY + this._resizing.height

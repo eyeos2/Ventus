@@ -9,7 +9,7 @@ suite('Resizer suite', function() {
 
 	});
 
-	test('assert', function() {
+	test('resize should call ', function() {
 		assert.equal(3, 3);
 	});
 });
