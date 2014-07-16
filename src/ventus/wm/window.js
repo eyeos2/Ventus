@@ -596,6 +596,7 @@ function(Emitter, View, WindowTemplate, Resizer) {
 		resize: function(w, h) {
 			this.width = w;
 			this.height = h;
+			this.signals.emit('resize', this);
 			return this;
 		},
 
