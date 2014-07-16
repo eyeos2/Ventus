@@ -70,8 +70,9 @@
 @bginactive: #888;
 @time: 0.5s;
 
-@minheight: 60px;
+
 @border-size: 2px;
+@header-height: 36px;
 
 .wm-window {
 	opacity: 0.98;
@@ -86,7 +87,7 @@
 	position: absolute;
 
 	min-width: 200px;
-	min-height: @minheight;
+	min-height: @header-height + (@border-size * 2);
 
 	background-color: #fff;
 	.box-shadow(0 0 12px 1px rgba(0, 0, 0, 0.6));
@@ -100,7 +101,6 @@
 		.flex-direction(column);
 
 		height: 100%;
-		min-height: @minheight;
 		width: 100%;
 
 		header.wm-window-title {
@@ -112,7 +112,7 @@
 			height: 100%;
 
 			padding: 0 8px;
-			height: 36px;
+			height: @header-height;
 
 			background-color: @bgactive;
 
@@ -201,8 +201,6 @@
 		section.wm-content {
 			display: block;
 			.flex(1);
-
-			min-height: @minheight;
 
 			overflow-x: hidden;
 			overflow-y: auto;

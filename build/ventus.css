@@ -299,7 +299,7 @@
   overflow: hidden;
   position: absolute;
   min-width: 200px;
-  min-height: 60px;
+  min-height: 40px;
   background-color: #fff;
   -webkit-box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.6);
   -moz-box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.6);
@@ -330,7 +330,6 @@
   -ms-box-orient: vertical;
   -o-box-orient: vertical;
   height: 100%;
-  min-height: 60px;
   width: 100%;
 }
 .wm-window .wm-window-box header.wm-window-title {
@@ -505,7 +504,6 @@
   -moz-box-flex: 1;
   -ms-box-flex: 1;
   -o-box-flex: 1;
-  min-height: 60px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -564,25 +562,21 @@
   background: #000000;
 }
 .wm-window .wm-window-border.top {
-  background: #000000;
   height: 2px;
   width: 100%;
   cursor: ns-resize;
 }
 .wm-window .wm-window-border.left {
-  background: #000000;
   height: 100%;
   width: 2px;
   cursor: ew-resize;
 }
 .wm-window .wm-window-border.right {
-  background: #000000;
   height: 100%;
   width: 2px;
   cursor: ew-resize;
 }
 .wm-window .wm-window-border.bottom {
-  background: #000000;
   position: relative;
   top: -9px;
   height: 2px;
