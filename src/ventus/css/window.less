@@ -268,32 +268,28 @@
 	}
 	.wm-window-border {
 		background: #000000;
-	}
-	.wm-window-border.top {
-		.wm-window-border;
-		height: @border-size;
-		width: 100%;
-		cursor: ns-resize;
-	}
-	.wm-window-border.left {
-		.wm-window-border;
-		height: 100%;
-		width: @border-size;
-		cursor: ew-resize;
-	}
-	.wm-window-border.right {
-		.wm-window-border;
-		height: 100%;
-		width: @border-size;
-		cursor: ew-resize;
-	}
-	.wm-window-border.bottom {
-		.wm-window-border;
-		position: relative;
-		top: -((@border-size * 2) + 5);
-		height: @border-size;
-		width: 100%;
-		cursor: ns-resize;
+		&.top {
+			height: @border-size;
+			width: 100%;
+			cursor: ns-resize;
+		}
+		&.left {
+			height: 100%;
+			width: @border-size;
+			cursor: ew-resize;
+		}
+		&.right {
+			height: 100%;
+			width: @border-size;
+			cursor: ew-resize;
+		}
+		&.bottom {
+			position: relative;
+			top: -((@border-size * 2) + 5);
+			height: @border-size;
+			width: 100%;
+			cursor: ns-resize;
+		}
 	}
 }
 
