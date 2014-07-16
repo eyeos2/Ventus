@@ -738,6 +738,39 @@ function(topResizer) {
 	return Resizer;
 });
 
+define('ventus/wm/mover/moverLimiter',[],
+
+	function () {
+		
+
+		var MoverLimiter = function (space, window, offset) {
+			this.space = space;
+			this.window = window;
+			this.offset = offset || 30; //px
+
+			var spaceBounds = space.offset();
+			this.bounds = {
+				top: spaceBounds.top + this.offset,
+				left: spaceBounds.left + this.offset,
+				bottom: spaceBounds.top + space.height() - this.offset,
+				right: spaceBounds.left + space.width() - this.offset
+			}
+		};
+
+		MoverLimiter.prototype.isOutOfLimitsLimit = function (event) {
+			if (event.originalEvent.pageX < this.bounds.left ||
+				event.originalEvent.pageX > this.bounds.right ||
+				event.originalEvent.pageY < this.bounds.top ||
+				event.originalEvent.pageY > this.bounds.bottom)
+			{
+				return true;
+			}
+			return false;
+		};
+
+		return MoverLimiter;
+	});
+
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
@@ -793,9 +826,10 @@ define('ventus/wm/window',[
 	'ventus/core/view',
 	'tpl!ventus/tpl/window',
 	'ventus/core/resizer',
+	'ventus/wm/mover/moverLimiter',
 	'less!ventus/css/window'
 ],
-function(Emitter, View, WindowTemplate, Resizer) {
+function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 	
 
 	var Window = function (options) {
@@ -1075,6 +1109,11 @@ function(Emitter, View, WindowTemplate, Resizer) {
 			space: {
 				'mousemove': function(e) {
 					if (this._moving) {
+
+						if(this.moverLimiter.isOutOfLimitsLimit(e)){
+							return;
+						}
+
 						if (this._moving['bottom-left']) {
 							this.move(
 								e.originalEvent.pageX - this._moving.x,
@@ -1171,6 +1210,7 @@ function(Emitter, View, WindowTemplate, Resizer) {
 			this._space = el;
 			el.append(this.el);
 			el.listen(this.events.space, this);
+			this.moverLimiter = new MoverLimiter(this._space, this);
 		},
 
 		get space() {
