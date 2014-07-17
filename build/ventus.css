@@ -539,19 +539,13 @@
   left: 4px;
   top: 2px;
   cursor: nw-resize;
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
+  background: none;
 }
 .wm-window .wm-window-box button.wm-resize.top-right {
   right: 4px;
   top: 2px;
   cursor: ne-resize;
-  -webkit-transform: rotate(270deg);
-  -moz-transform: rotate(270deg);
-  -o-transform: rotate(270deg);
-  -ms-transform: rotate(270deg);
+  background: none;
 }
 .wm-window .wm-container {
   display: inline-flex;
