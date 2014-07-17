@@ -28,8 +28,13 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			movable: true,
 			resizable: true,
 			widget: false,
-			titlebar: true
+			titlebar: true,
+			tiltAnimation: true
 		};
+
+		if(options.tiltAnimation === null || options.tiltAnimation === undefined) {
+			options.tiltAnimation = true;
+		}
 
 		// View
 		this.el = View(WindowTemplate({
@@ -64,6 +69,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		this.maximized = false;
 		this.minimized = false;
 
+		this.shouldtiltOnMove = options.tiltAnimation;
+
 		// Properties
 		this.widget = false;
 		this.movable = true;
@@ -87,9 +94,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					x: e.originalEvent.pageX,
 					y: e.originalEvent.pageY
 				});
-
-				this.el.addClass('move');
-
+				if(this.shouldtiltOnMove) {
+					this.el.addClass('move');
+				}
 				e.preventDefault();
 			}
 		},
@@ -369,7 +376,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 				'mouseup': function() {
 					if (this._moving) {
-						this.el.removeClass('move');
+						if(this.shouldtiltOnMove) {
+							this.el.removeClass('move');
+						}
 						this._moving = null;
 					}
 

@@ -1,3 +1,4 @@
+
 .wm-space.fullscreen .wm-window {
   -webkit-transform: translate3d(0, 0, 0);
   -webkit-transition: all 0.5s ease-out;
@@ -76,6 +77,7 @@
   -o-transition: opacity 0.5s ease-out;
   transition: opacity 0.5s ease-out;
 }
+
 /* Wobbly animation */
 @-webkit-keyframes wobbly {
   0% {
