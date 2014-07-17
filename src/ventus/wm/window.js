@@ -180,6 +180,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					};
 
 					this.el.addClass('resizing');
+					this.el.prepend('<div class="resize-overlay"></div>');
+					
 
 					e.preventDefault();
 				},
@@ -200,6 +202,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					this._moving['top-right'] = true;
 
 					this.el.addClass('resizing');
+					this.el.prepend('<div class="resize-overlay"></div>');
 
 					e.preventDefault();
 				},
@@ -220,6 +223,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					this._moving['top-left'] = true;
 
 					this.el.addClass('resizing');
+					this.el.prepend('<div class="resize-overlay"></div>');
 
 					e.preventDefault();
 				},
@@ -240,6 +244,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					this._moving['bottom-left'] = true;
 
 					this.el.addClass('resizing');
+					this.el.prepend('<div class="resize-overlay"></div>');
 
 					e.preventDefault();
 				},
@@ -259,6 +264,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					});
 
 					this.el.addClass('resizing');
+					this.el.prepend('<div class="resize-overlay"></div>');
 
 					e.preventDefault();
 				},
@@ -278,6 +284,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					});
 
 					this.el.addClass('resizing');
+					this.el.prepend('<div class="resize-overlay"></div>');
 
 					e.preventDefault();
 				},
@@ -290,6 +297,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						height: this.height - e.originalEvent.pageY
 					};
 					this.el.addClass('resizing');
+					this.el.prepend('<div class="resize-overlay"></div>');
 
 					e.preventDefault();
 				},
@@ -303,6 +311,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						height: this.height
 					};
 					this.el.addClass('resizing');
+					this.el.prepend('<div class="resize-overlay"></div>');
 
 					e.preventDefault();
 				}
@@ -401,6 +410,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						this._resizing = null;
 						this._resizer = null;
 					}
+
+					$('.resize-overlay').remove();
 				}
 			}
 		},
