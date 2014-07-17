@@ -133,6 +133,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				},
 
 				'.wm-window-title mousedown': function(e) {
+					this.el.prepend('<div class="resize-overlay"></div>');
 					this.slots.move.call(this, e);
 				},
 
