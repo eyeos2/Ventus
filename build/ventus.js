@@ -972,7 +972,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		},
 
 		addDivOverlay: function() {
-			debugger;
 			this.manager.addOverlaysToAllWindows();
 		},
 		removeDivOverlay: function() {
