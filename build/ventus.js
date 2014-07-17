@@ -911,8 +911,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		if(options.content)
 			this.$content.append(options.content);
 
-		this.$content.append('<iframe type="text/html" src="//www.youtube.com/embed/8eb4tWf7_1Y" frameborder="0" allowfullscreen></iframe>');
-
 		// Cache header element
 		this.$titlebar = this.el.find('header');
 
