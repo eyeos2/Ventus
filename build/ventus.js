@@ -1457,12 +1457,15 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			return this.restore;
 		},
 
-		restore: function(){},
+		restore: function(){
+			this.resize(this.width, this.height);
+		},
 
 		maximize: function() {
 			this.el.addClass('maximazing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('maximazing');
+				this.resize(this.width, this.height);
 			}, this);
 
 			this.maximized = !this.maximized;
@@ -1473,6 +1476,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			this.el.addClass('minimizing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('minimizing');
+				this.resize(this.width, this.height);
 			}, this);
 
 			this.minimized = !this.minimized;

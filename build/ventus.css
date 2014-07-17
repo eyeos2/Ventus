@@ -299,7 +299,7 @@
   overflow: hidden;
   position: absolute;
   min-width: 200px;
-  min-height: 40px;
+  min-height: 38px;
   background-color: #fff;
   -webkit-box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.6);
   -moz-box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.6);
@@ -553,27 +553,27 @@
   height: 100%;
 }
 .wm-window .wm-window-border {
-  background: #000000;
+  background: #494949;
 }
 .wm-window .wm-window-border.top {
-  height: 2px;
+  height: 1px;
   width: 100%;
   cursor: ns-resize;
 }
 .wm-window .wm-window-border.left {
   height: 100%;
-  width: 2px;
+  width: 1px;
   cursor: ew-resize;
 }
 .wm-window .wm-window-border.right {
   height: 100%;
-  width: 2px;
+  width: 1px;
   cursor: ew-resize;
 }
 .wm-window .wm-window-border.bottom {
   position: relative;
-  top: -9px;
-  height: 2px;
+  top: -7px;
+  height: 1px;
   width: 100%;
   cursor: ns-resize;
 }
