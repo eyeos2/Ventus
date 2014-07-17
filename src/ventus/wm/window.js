@@ -29,16 +29,29 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			resizable: true,
 			widget: false,
 			titlebar: true,
-			tiltAnimation: true
+			tiltAnimation: true,
+			imageUrl: null,
+			minimize: true
 		};
+		var shouldRenderImage = false;
+		if(options.imageUrl && options.imageUrl !== null) {
+			shouldRenderImage=true;
+		}
 
 		if(options.tiltAnimation === null || options.tiltAnimation === undefined) {
 			options.tiltAnimation = true;
 		}
 
+		if(options.minimize === null || options.minimize === undefined) {
+			options.minimize = true;
+		}
+
 		// View
 		this.el = View(WindowTemplate({
 			title: options.title,
+			imgUrl: options.imageUrl,
+			minimize: options.minimize,
+			renderImg: shouldRenderImage,
 			classname: options.classname||''
 		}));
 		this.el.listen(this.events.window, this);

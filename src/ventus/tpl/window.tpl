@@ -4,9 +4,14 @@
 	    <div class="wm-window-border left  wm-resize"></div>
         <div class="wm-window-box">
             <header class="wm-window-title" unselectable="on">
+                {{#renderImg}}
+                    <img src="{{imgUrl}}" width=16 height=16/>
+                {{/renderImg}}
                 <h1 unselectable="on">{{title}}</h1>
                 <div class="wm-button-group">
+                    {{#minimize}}
                     <button class="wm-minimize">&nbsp;</button>
+                    {{/minimize}}
                     <button class="wm-maximize">&nbsp;</button>
                     <button class="wm-close">&nbsp;</button>
                 </div>
