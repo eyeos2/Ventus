@@ -14,19 +14,25 @@ module.exports = function(config) {
     basePath: '../',
 
     // testing framework to use (jasmine/mocha/qunit/...)
-    frameworks: ['mocha', 'chai', 'sinon'],
+    frameworks: ['requirejs', 'mocha', 'chai', 'sinon'],
 
     // list of files / patterns to load in the browser
-    files: [
+	files: [
 		'test/mocha.conf.js',
-		'vendor/jquery.js',
-		'vendor/handlebars.js',
-		'build/**/*.js',
-		'test/**/*.test.js'
-	],
+		{pattern: 'vendor/**/*.js', included: false},
+		{pattern: 'src/**/*.js', included: false},
+		{pattern: 'test/**/*.test.js', included: false},
+		'test/test-main.js'
+  ],
 
     // list of files / patterns to exclude
-    exclude: [],
+    exclude: [
+	    'build/**/*.js',
+	    'vendor/require.js',
+        'src/ventus.js',
+        'src/wrap.end',
+        'src/wrap.start'
+    ],
 
     // web server port
     port: 8080,
@@ -45,6 +51,7 @@ module.exports = function(config) {
 
     // Which plugins to enable
     plugins: [
+	    'karma-requirejs',
 		'karma-mocha',
 		'karma-chai',
 		'karma-sinon',
