@@ -46,6 +46,8 @@ define(function(require) {
 		// Binding sub-functions to this object
 		this.createWindow.fromQuery = this.createWindow.fromQuery.bind(this);
 		this.createWindow.fromElement = this.createWindow.fromElement.bind(this);
+		this._overlapping = false;
+		this._unoverlapping = false;
 	};
 
 	WindowManager.prototype = {
@@ -58,6 +60,8 @@ define(function(require) {
 			'restore',
 			'select'
 		],
+
+
 
 		modes: {
 			'default': DefaultMode,
@@ -98,8 +102,28 @@ define(function(require) {
 			return this._overlay;
 		},
 
+		addOverlaysToAllWindows: function() {
+			if(!this._overlapping) {
+				this._overlapping = true;
+				for(var i = 0; i < this.windows.length; i++) {
+					this.windows[i].doRenderOverlay();
+				}
+				this._overlapping = false;
+			}
+		},
+
+		removeOverlaysToAllWindows: function() {
+			if(!this._unoverlapping) {
+				this._unoverlapping = true;
+				for(var i = 0; i < this.windows.length; i++) {
+					this.windows[i].doEraseOverlay();
+				}
+				this._unoverlapping = false;
+			}
+		},
+
 		createWindow: function(options) {
-			var win = new Window(options);
+			var win = new Window(options, this);
 
 			// Show 'default' mode
 			this.mode = 'default';

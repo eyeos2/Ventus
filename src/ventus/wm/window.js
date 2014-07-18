@@ -14,8 +14,9 @@ define([
 function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 	'use strict';
 
-	var Window = function (options) {
+	var Window = function (options, manager) {
 		this.signals = new Emitter();
+		this.manager = manager;
 
 		options = options || {
 			title: 'Untitle Window',
@@ -114,7 +115,23 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			}
 		},
 
+		doRenderOverlay: function() {
+			this.el.prepend('<div class="resize-overlay"></div>');
+		},
+
+		doEraseOverlay: function() {
+			$('.resize-overlay').remove();
+		},
+
+		addDivOverlay: function() {
+			this.manager.addOverlaysToAllWindows();
+		},
+		removeDivOverlay: function() {
+			this.manager.removeOverlaysToAllWindows();
+		},
+
 		events: {
+
 			window: {
 				'click': function(e) {
 					this.signals.emit('select', this, e);
@@ -133,7 +150,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				},
 
 				'.wm-window-title mousedown': function(e) {
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 					this.slots.move.call(this, e);
 				},
 
@@ -181,7 +198,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					};
 
 					this.el.addClass('resizing');
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 					
 
 					e.preventDefault();
@@ -203,7 +220,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					this._moving['top-right'] = true;
 
 					this.el.addClass('resizing');
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 
 					e.preventDefault();
 				},
@@ -224,7 +241,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					this._moving['top-left'] = true;
 
 					this.el.addClass('resizing');
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 
 					e.preventDefault();
 				},
@@ -245,7 +262,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					this._moving['bottom-left'] = true;
 
 					this.el.addClass('resizing');
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 
 					e.preventDefault();
 				},
@@ -265,7 +282,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					});
 
 					this.el.addClass('resizing');
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 
 					e.preventDefault();
 				},
@@ -285,7 +302,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					});
 
 					this.el.addClass('resizing');
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 
 					e.preventDefault();
 				},
@@ -298,7 +315,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						height: this.height - e.originalEvent.pageY
 					};
 					this.el.addClass('resizing');
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 
 					e.preventDefault();
 				},
@@ -312,7 +329,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						height: this.height
 					};
 					this.el.addClass('resizing');
-					this.el.prepend('<div class="resize-overlay"></div>');
+					this.addDivOverlay();
 
 					e.preventDefault();
 				}
@@ -412,7 +429,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						this._resizer = null;
 					}
 
-					$('.resize-overlay').remove();
+					this.removeDivOverlay();
 				}
 			}
 		},
