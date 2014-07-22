@@ -338,12 +338,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			space: {
 				'mousemove': function(e) {
 					if (this._moving) {
-
-						if (this.moverLimiter.isOutOfBounds()) {
-							this.events.space.mouseup.call(this);
-							return;
-						}
-
 						if (this._moving['bottom-left']) {
 							this.move(
 								e.originalEvent.pageX - this._moving.x,
@@ -417,6 +411,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 				'mouseup': function() {
 					if (this._moving) {
+
+						this.moverLimiter.checkOutOfBounds();
+
 						if(this.shouldtiltOnMove) {
 							this.el.removeClass('move');
 						}

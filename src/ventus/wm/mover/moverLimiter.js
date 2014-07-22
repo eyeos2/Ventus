@@ -17,7 +17,7 @@ define([],
 			}
 		};
 
-		MoverLimiter.prototype.isOutOfBounds = function () {
+		MoverLimiter.prototype.checkOutOfBounds = function () {
 			if (this.window.x <= this.bounds.left - this.window.width) {
 				this.window.x = this.bounds.left - this.window.width + 1;
 				return true;

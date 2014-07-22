@@ -785,7 +785,7 @@ define('ventus/wm/mover/moverLimiter',[],
 			}
 		};
 
-		MoverLimiter.prototype.isOutOfBounds = function () {
+		MoverLimiter.prototype.checkOutOfBounds = function () {
 			if (this.window.x <= this.bounds.left - this.window.width) {
 				this.window.x = this.bounds.left - this.window.width + 1;
 				return true;
@@ -1194,10 +1194,14 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				'mousemove': function(e) {
 					if (this._moving) {
 
-						if (this.moverLimiter.isOutOfBounds()) {
-							this.events.space.mouseup.call(this);
-							return;
-						}
+//						if (this.moverLimiter.checkOutOfBounds()) {
+//							this.events.space.mouseup.call(this);
+//							this.move(
+//									this._moving.x,
+//									this._moving.y
+//							);
+//							return;
+//						}
 
 						if (this._moving['bottom-left']) {
 							this.move(
@@ -1272,6 +1276,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 				'mouseup': function() {
 					if (this._moving) {
+
+						this.moverLimiter.checkOutOfBounds();
+
 						if(this.shouldtiltOnMove) {
 							this.el.removeClass('move');
 						}
