@@ -339,7 +339,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				'mousemove': function(e) {
 					if (this._moving) {
 
-						if(this.moverLimiter.isOutOfLimitsLimit(e)){
+						if (this.moverLimiter.isOutOfBounds()) {
+							this.events.space.mouseup.call(this);
 							return;
 						}
 
@@ -443,7 +444,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			this._space = el;
 			el.append(this.el);
 			el.listen(this.events.space, this);
-			this.moverLimiter = new MoverLimiter(this._space, this);
+			this.moverLimiter = new MoverLimiter(this._space, this, this.$titlebar.height());
 		},
 
 		get space() {
