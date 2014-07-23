@@ -4,7 +4,7 @@ define(['ventus/wm/mover/moverLimiter'], function(MoverLimiter) {
 
 		setup(function () {
 			space = {
-				offset: function(){
+				position: function(){
 					return {
 						top: 0,
 						left: 0

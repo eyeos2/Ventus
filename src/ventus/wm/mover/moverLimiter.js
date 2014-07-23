@@ -8,7 +8,7 @@ define([],
 			this.window = window;
 			this.offset = offset || 30; //px
 
-			var spaceBounds = space.offset();
+			var spaceBounds = space.position();
 			this.bounds = {
 				top: spaceBounds.top,
 				left: spaceBounds.left + this.offset,
