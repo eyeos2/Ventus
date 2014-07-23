@@ -6,12 +6,6 @@ module.exports = function (grunt) {
 	// Time how long tasks take. Can help when optimizing build times
 	require('time-grunt')(grunt);
 
-	// Configurable paths for the application
-	var appConfig = {
-		app: 'src',
-		dist: 'build'
-	};
-
 	// Project configuration
 	grunt.initConfig({
 
@@ -24,6 +18,19 @@ module.exports = function (grunt) {
 				files: {
 					'src/ventus/tpl/window.tpl.js': 'src/ventus/tpl/window.tpl'
 				}
+			}
+		},
+
+		less: {
+			default: {
+				options: {
+					paths: ["src/ventus/css"]
+				},
+				files: {
+					"build/ventus.css": ['src/ventus/css/*.less']
+				},
+				compress: true,
+				cleancss: true
 			}
 		},
 
@@ -88,18 +95,20 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('buildDebug', [
+		'less',
 		'handlebars:compile',
 		'requirejs:compile'
 	]);
 
 	grunt.registerTask('buildMin', [
+		'less',
 		'handlebars:compile',
 		'requirejs:compilemin'
 	]);
 
 	grunt.registerTask('build', 'Generating build', function (target) {
 		if (!target) {
-			grunt.task.run(['handlebars:compile', 'requirejs:compile', 'requirejs:compilemin']);
+			grunt.task.run(['handlebars:compile', 'less', 'requirejs:compile', 'requirejs:compilemin']);
 		} else if (target === "min") {
 			grunt.task.run('buildMin');
 		} else if (target === "debug") {
