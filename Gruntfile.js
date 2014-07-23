@@ -9,6 +9,11 @@ module.exports = function (grunt) {
 	// Project configuration
 	grunt.initConfig({
 
+		// Project settings
+		dirs: {
+			app: 'src',
+			dist: 'build'
+		},
 		handlebars: {
 			compile: {
 				options: {
@@ -16,7 +21,7 @@ module.exports = function (grunt) {
 					amd: true
 				},
 				files: {
-					'src/ventus/tpl/window.tpl.js': 'src/ventus/tpl/window.tpl'
+					'src/ventus/tpl/window.tpl.js': '<%= dirs.app %>/ventus/tpl/window.tpl'
 				}
 			}
 		},
@@ -24,10 +29,10 @@ module.exports = function (grunt) {
 		less: {
 			default: {
 				options: {
-					paths: ["src/ventus/css"]
+					paths: ["<%= dirs.app %>/ventus/css"]
 				},
 				files: {
-					"build/ventus.css": ['src/ventus/css/*.less']
+					"build/ventus.css": ['<%= dirs.app %>/ventus/css/*.less']
 				},
 				compress: true,
 				cleancss: true
@@ -69,12 +74,12 @@ module.exports = function (grunt) {
 			},
 			debug: {
 				options: {
-					out: "build/ventus.js"
+					out: "<%= dirs.dist %>/ventus.js"
 				}
 			},
 			release: {
 				options: {
-					out: "build/ventus.min.js",
+					out: "<%= dirs.dist %>/ventus.min.js",
 					optimize: 'uglify'
 				}
 			}
@@ -84,7 +89,7 @@ module.exports = function (grunt) {
 			release: {
 				src: [
 					'build/*',
-					'src/ventus/tpl/*.tpl.js'
+					'<%= dirs.app %>/ventus/tpl/*.tpl.js'
 				]
 			}
 		},
@@ -103,7 +108,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('build', 'Generating build', function (target) {
-		grunt.task.run(['handlebars:compile', 'less']);
+		grunt.task.run(['clean', 'handlebars:compile', 'less']);
 
 		if (!target) {
 			grunt.task.run(['requirejs:release', 'requirejs:debug']);
