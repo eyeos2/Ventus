@@ -80,6 +80,15 @@ module.exports = function (grunt) {
 			}
 		},
 
+		clean: {
+			release: {
+				src: [
+					'build/*',
+					'src/ventus/tpl/*.tpl.js'
+				]
+			}
+		},
+
 		// Test settings
 		karma: {
 			unit: {
