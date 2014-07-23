@@ -65,15 +65,14 @@ module.exports = function (grunt) {
 				wrap: {
 					startFile: "src/wrap.start",
 					endFile: "src/wrap.end"
-				},
-				out: "build/ventus.js"
+				}
 			},
-			compile: {
+			debug: {
 				options: {
 					out: "build/ventus.js"
 				}
 			},
-			compilemin: {
+			release: {
 				options: {
 					out: "build/ventus.min.js",
 					optimize: 'uglify'
@@ -94,25 +93,13 @@ module.exports = function (grunt) {
 		'karma'
 	]);
 
-	grunt.registerTask('buildDebug', [
-		'less',
-		'handlebars:compile',
-		'requirejs:compile'
-	]);
-
-	grunt.registerTask('buildMin', [
-		'less',
-		'handlebars:compile',
-		'requirejs:compilemin'
-	]);
-
 	grunt.registerTask('build', 'Generating build', function (target) {
+		grunt.task.run(['handlebars:compile', 'less']);
+
 		if (!target) {
-			grunt.task.run(['handlebars:compile', 'less', 'requirejs:compile', 'requirejs:compilemin']);
-		} else if (target === "min") {
-			grunt.task.run('buildMin');
-		} else if (target === "debug") {
-			grunt.task.run('buildDebug');
+			grunt.task.run(['requirejs:release', 'requirejs:debug']);
+		} else {
+			grunt.task.run('requirejs:'+target); //release or debug
 		}
 	});
 
