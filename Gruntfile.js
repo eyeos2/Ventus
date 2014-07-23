@@ -28,39 +28,48 @@ module.exports = function (grunt) {
 		},
 
 		requirejs: {
+			options: {
+				baseUrl: 'vendor',
+
+				paths: {
+					'ventus': '../src/ventus',
+
+					'tpl': '../src/plugins/tpl',
+					'less': '../src/plugins/less',
+					'text': '../src/plugins/text',
+
+					'$': 'jquery',
+					'Underscore': '../vendor/underscore'
+				},
+
+				shim: {
+					'Underscore': {
+						exports: '_'
+					}
+				},
+
+				optimizeAllPluginResources: true,
+
+				include: ['almond', 'ventus'],
+				exclude: ['$', 'handlebars'],
+
+				optimize: 'none',
+
+				wrap: {
+					startFile: "src/wrap.start",
+					endFile: "src/wrap.end"
+				},
+				out: "build/ventus.js"
+			},
 			compile: {
 				options: {
-					baseUrl: 'vendor',
-
-					paths: {
-						'ventus': '../src/ventus',
-
-						'tpl': '../src/plugins/tpl',
-						'less': '../src/plugins/less',
-						'text': '../src/plugins/text',
-
-						'$': 'jquery',
-						'Underscore': '../vendor/underscore'
-					},
-
-					shim: {
-						'Underscore': {
-							exports: '_'
-						}
-					},
-
-					optimizeAllPluginResources: true,
-
-					include: ['almond', 'ventus'],
-					exclude: ['$', 'handlebars'],
-
-					optimize: 'none',
-
-					wrap: {
-						startFile: "src/wrap.start",
-						endFile: "src/wrap.end"
-					},
 					out: "build/ventus.js"
+				}
+			},
+			compilemin: {
+				options: {
+					out: "build/ventus.min.js",
+					optimize: 'uglify'
 				}
 			}
 		},
@@ -78,10 +87,26 @@ module.exports = function (grunt) {
 		'karma'
 	]);
 
-	grunt.registerTask('build', [
+	grunt.registerTask('buildDebug', [
 		'handlebars:compile',
 		'requirejs:compile'
 	]);
+
+	grunt.registerTask('buildMin', [
+		'handlebars:compile',
+		'requirejs:compilemin'
+	]);
+
+	grunt.registerTask('build', 'Generating build', function (target) {
+		if (!target) {
+			grunt.task.run(['handlebars:compile', 'requirejs:compile', 'requirejs:compilemin']);
+		} else if (target === "min") {
+			grunt.task.run('buildMin');
+		} else if (target === "debug") {
+			grunt.task.run('buildDebug');
+		}
+	});
+
 
 };
 
