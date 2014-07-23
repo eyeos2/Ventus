@@ -14,6 +14,19 @@ module.exports = function (grunt) {
 			app: 'src',
 			dist: 'build'
 		},
+
+		// Watches files for changes and runs tasks based on the changed files
+		watch: {
+			css: {
+				files: ['<%= dirs.app %>/ventus/css/*.less'],
+				tasks: ['less'],
+				options: {
+					// Start a live reload server on the default port 35729
+					livereload: 35730
+				}
+			}
+		},
+
 		handlebars: {
 			compile: {
 				options: {
