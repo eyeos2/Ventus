@@ -8,16 +8,12 @@ define([],
 			this.window = window;
 			this.offset = offset || 30; //px
 
-			var spaceBounds = space.position();
-			this.bounds = {
-				top: spaceBounds.top,
-				left: spaceBounds.left + this.offset,
-				bottom: spaceBounds.top + space.height() - this.offset,
-				right: spaceBounds.left + space.width() - this.offset
-			}
+			calculateBounds.call(this, space);
 		};
 
 		MoverLimiter.prototype.checkOutOfBounds = function () {
+			calculateBounds.call(this, this.space);
+
 			if (this.window.x <= this.bounds.left - this.window.width) {
 				this.window.x = this.bounds.left - this.window.width + 1;
 				return true;
@@ -36,6 +32,15 @@ define([],
 
 			return false;
 		};
+
+		function calculateBounds(space) {
+			this.bounds = {
+				top: 0,
+				left: this.offset,
+				bottom: space.height() - this.offset,
+				right: space.width() - this.offset
+			}
+		}
 
 		return MoverLimiter;
 	});

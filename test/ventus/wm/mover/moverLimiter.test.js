@@ -4,18 +4,10 @@ define(['ventus/wm/mover/moverLimiter'], function(MoverLimiter) {
 
 		setup(function () {
 			space = {
-				position: function(){
-					return {
-						top: 0,
-						left: 0
-					}
-				},
 				width: function(){
 					return 1400
 				},
-				height: function(){
-					return 1200
-				}
+				height: sinon.stub().returns(1200)
 			};
 			window = {
 				width: 100,
@@ -74,6 +66,14 @@ define(['ventus/wm/mover/moverLimiter'], function(MoverLimiter) {
 			placeWindowAndExecute(0, 1600);
 			assert.equal(moverLimiter.window.y, 1169);
 		});
+
+		//bugfix
+		test("checkOutOfBounds when wm-space is resized should recalculate bounds correctly", function() {
+			space.height.onSecondCall().returns(200);
+			placeWindowAndExecute(0, 1600);
+			assert.equal(moverLimiter.window.y, 169);
+		});
+
 	});
 
 });
