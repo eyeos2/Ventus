@@ -1274,7 +1274,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					}
 				},
 
-				'mouseup': function() {
+				'mouseup': function(e) {
 					if (this._moving) {
 
 						this.moverLimiter.checkOutOfBounds();
@@ -1293,6 +1293,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					}
 
 					this.removeDivOverlay();
+					e.stopPropagation();
 				}
 			}
 		},
@@ -1879,6 +1880,7 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 	var FullscreenMode = require('ventus/wm/modes/fullscreen');
 
 	var WindowManager = function ($baseElem) {
+		var self = this;
 		$baseElem = $baseElem || $(document.body);
 		this.el = view('<div class="wm-space"><div class="wm-overlay" /></div>');
 		$baseElem.prepend(this.el);
@@ -1913,6 +1915,13 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 		this.createWindow.fromElement = this.createWindow.fromElement.bind(this);
 		this._overlapping = false;
 		this._unoverlapping = false;
+
+		//bind mouseup event outside the document to the active window
+		$(window).mouseup(function(e){
+			if(self.active){
+				self.active.events.space.mouseup.call(self.active, e);
+			}
+		});
 	};
 
 	WindowManager.prototype = {

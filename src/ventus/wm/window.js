@@ -409,7 +409,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					}
 				},
 
-				'mouseup': function() {
+				'mouseup': function(e) {
 					if (this._moving) {
 
 						this.moverLimiter.checkOutOfBounds();
@@ -428,6 +428,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					}
 
 					this.removeDivOverlay();
+					e.stopPropagation();
 				}
 			}
 		},
