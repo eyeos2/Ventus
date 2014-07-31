@@ -7,7 +7,6 @@ define(['less!../../../css/windowmanager'], function() {
 
 	var DefaultMode = {
 		register: function() {
-			console.log("Default mode registered.");
 		},
 
 		plug: function() {

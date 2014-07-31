@@ -10,7 +10,6 @@ define(['less!../../../css/fullscreen'], function() {
 
 		// Launch when plugin is registered
 		register: function() {
-			console.log('Fullscreen mode registered.');
 		},
 
 		// Lauch when plugin is enabled

@@ -12,8 +12,6 @@ define(['Underscore', 'less!../../../css/expose'], function(_) {
 		register: function() {
 			var self = this;
 
-			console.log('Expose mode registered.');
-
 			this.el.on('contextmenu', _.throttle(function() {
 				// Right click sets expose mode
 				if (self.mode !== 'expose') {
