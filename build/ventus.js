@@ -1629,7 +1629,6 @@ define('ventus/wm/modes/default',['less!../../../css/windowmanager'], function()
 
 	var DefaultMode = {
 		register: function() {
-			console.log("Default mode registered.");
 		},
 
 		plug: function() {
@@ -1680,8 +1679,6 @@ define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], func
 		// Launch when plugin is registered
 		register: function() {
 			var self = this;
-
-			console.log('Expose mode registered.');
 
 			this.el.on('contextmenu', _.throttle(function() {
 				// Right click sets expose mode
@@ -1807,7 +1804,6 @@ define('ventus/wm/modes/fullscreen',['less!../../../css/fullscreen'], function()
 
 		// Launch when plugin is registered
 		register: function() {
-			console.log('Fullscreen mode registered.');
 		},
 
 		// Lauch when plugin is enabled
