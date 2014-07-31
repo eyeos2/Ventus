@@ -14,23 +14,25 @@ define([],
 		MoverLimiter.prototype.checkOutOfBounds = function () {
 			calculateBounds.call(this, this.space);
 
+			var isOut = false;
+
 			if (this.window.x <= this.bounds.left - this.window.width) {
 				this.window.x = this.bounds.left - this.window.width + 1;
-				return true;
+				isOut = true;
 			}
 			else if (this.window.x > this.bounds.right) {
 				this.window.x = this.bounds.right - 1;
-				return true;
+				isOut = true;
 			}
 			if (this.window.y < this.bounds.top) {
 				this.window.y = this.bounds.top + 1;
-				return true;
+				isOut = true;
 			} else if (this.window.y > this.bounds.bottom) {
 				this.window.y = this.bounds.bottom - 1;
-				return true;
+				isOut = true;
 			}
 
-			return false;
+			return isOut;
 		};
 
 		function calculateBounds(space) {

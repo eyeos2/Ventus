@@ -67,6 +67,14 @@ define(['ventus/wm/mover/moverLimiter'], function(MoverLimiter) {
 			assert.equal(moverLimiter.window.y, 1169);
 		});
 
+		//corner
+		test('checkOutOfBounds when x and y position is out of bounds should fix both positions', function() {
+			placeWindowAndExecute(-200, 1600);
+			assert.equal(moverLimiter.window.x, -69);
+			assert.equal(moverLimiter.window.y, 1169);
+		});
+
+
 		//bugfix
 		test("checkOutOfBounds when wm-space is resized should recalculate bounds correctly", function() {
 			space.height.onSecondCall().returns(200);
