@@ -8,8 +8,9 @@ A window manager experiment written in Javascript, HTML5 and CSS3.
 ## Installation
 
     git clone https://github.com/eyeos2/Ventus.git
-    ./prerequirements.sh
-    
+    npm install
+    bower install -f
+
   
 ## Usage
 
