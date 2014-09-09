@@ -927,6 +927,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		if(options.opacity)
 			this.el.css('opacity', options.opacity);
 
+		if(options.minWidth)
+			this.el.css('minWidth', options.minWidth);
+
+		if(options.minHeight)
+			this.el.css('minHeight', options.minHeight);
+
 		// Cache content element
 		this.$content = this.el.find('.wm-content');
 		if(options.content)
