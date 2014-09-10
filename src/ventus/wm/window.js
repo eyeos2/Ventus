@@ -423,6 +423,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						if(this.shouldtiltOnMove) {
 							this.el.removeClass('move');
 						}
+
+						this.signals.emit('move', this);
 						this._moving = null;
 					}
 
@@ -431,6 +433,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						this._restore = null;
 						this._resizing = null;
 						this._resizer = null;
+						this.signals.emit('resize', this);
 					}
 
 					this.removeDivOverlay();
