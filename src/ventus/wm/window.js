@@ -169,8 +169,13 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					if(this.enabled)
-						this.close();
+					if(this.enabled){
+						if (this.hasSpecialCloseBehaviour) {
+							this.signals.emit('close', this);
+						} else {
+							this.close();
+						}
+					}
 				},
 
 				'.wm-window-title button.wm-maximize click': function(e) {
@@ -549,7 +554,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 		set closed(value) {
 			if(value) {
-				this.signals.emit('close', this);
+				if (!this.hasSpecialCloseBehaviour) {
+					this.signals.emit('close', this);
+				}
 
 				this.el.addClass('closing');
 				this.el.onAnimationEnd(function(){
