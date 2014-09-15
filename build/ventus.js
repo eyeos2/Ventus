@@ -964,6 +964,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		this.resizable = (typeof options.resizable !== 'undefined') ?
 			options.resizable :
 			true;
+		this.disableContinuousResizeEvents = options.disableContinuousResizeEvents || false;
 
 		this.titlebar = true;
 	};
@@ -1538,7 +1539,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		resize: function(w, h) {
 			this.width = w;
 			this.height = h;
-			this.signals.emit('resize', this);
+			if (!this.disableContinuousResizeEvents) {
+				this.signals.emit('resize', this);
+			}
 			return this;
 		},
 
