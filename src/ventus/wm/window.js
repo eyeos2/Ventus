@@ -497,9 +497,11 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 		set active(value) {
 			if(value) {
-				this.signals.emit('focus', this);
-				this.el.addClass('active');
-				this.el.removeClass('inactive');
+				if(!this._active){
+					this.signals.emit('focus', this);
+					this.el.addClass('active');
+					this.el.removeClass('inactive');
+				}
 			}
 			else {
 				this.signals.emit('blur', this);
