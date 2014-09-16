@@ -540,7 +540,7 @@
   background: none;
 }
 .wm-window .wm-container {
-  display: inline-flex;
+  display: flex;
   width: 100%;
   height: 100%;
 }
@@ -564,7 +564,7 @@
 }
 .wm-window .wm-window-border.bottom {
   position: relative;
-  top: -7px;
+  top: 0;
   height: 1px;
   width: 100%;
   cursor: ns-resize;
