@@ -2,3 +2,5 @@
 .DS_Store
 .idea
 /bower_components
+build/reports
+build/report
