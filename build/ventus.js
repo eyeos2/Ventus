@@ -1731,12 +1731,12 @@ define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], func
 				win.stamp();
 
 				// Scale factor
-				if(win.height > win.width) {
-					scale = (win.height > maxHeight) ? maxHeight / win.height : 1;
-				}
-				else {
-					scale = (win.width > maxWidth) ? maxWidth / win.width : 1;
-				}
+				var scaleHeight = maxHeight / win.height;
+				var scaleWidth = maxWidth / win.width;
+
+				scale = scaleHeight < scaleWidth ? scaleHeight : scaleWidth; //get the minor
+
+				if (scale > 1) scale = 1;
 
 				scale -= 0.15; // To add a little padding
 
