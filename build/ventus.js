@@ -1531,6 +1531,14 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			return parseInt(this.el.css('z-index'), 10);
 		},
 
+		set id(value) {
+			this._id = value;
+		},
+
+		get id() {
+			return this._id;
+		},
+
 		open: function() {
 			this.opened = true;
 			return this;
@@ -1995,6 +2003,16 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 			return this._overlay;
 		},
 
+		set nextWindowId (value) {
+
+		},
+
+		get nextWindowId () {
+			var nextId = (this._lastWindowId || 0) + 1;
+			this._lastWindowId = nextId;
+			return nextId;
+		},
+
 		addOverlaysToAllWindows: function() {
 			if(!this._overlapping) {
 				this._overlapping = true;
@@ -2018,6 +2036,8 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 		createWindow: function(options) {
 			var win = new Window(options, this);
 
+			win.id = this.nextWindowId;
+
 			// Show 'default' mode
 			this.mode = 'default';
 
@@ -2037,6 +2057,14 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 
 			win.focus();
 			return win;
+		},
+
+		getWindowById: function (id) {
+			for (var len = this.windows.length; len--;) {
+				if (this.windows[len].id === id) {
+					return this.windows[len];
+				}
+			}
 		},
 
 		/**

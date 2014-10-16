@@ -110,6 +110,16 @@ define(function(require) {
 			return this._overlay;
 		},
 
+		set nextWindowId (value) {
+
+		},
+
+		get nextWindowId () {
+			var nextId = (this._lastWindowId || 0) + 1;
+			this._lastWindowId = nextId;
+			return nextId;
+		},
+
 		addOverlaysToAllWindows: function() {
 			if(!this._overlapping) {
 				this._overlapping = true;
@@ -133,6 +143,8 @@ define(function(require) {
 		createWindow: function(options) {
 			var win = new Window(options, this);
 
+			win.id = this.nextWindowId;
+
 			// Show 'default' mode
 			this.mode = 'default';
 
@@ -152,6 +164,14 @@ define(function(require) {
 
 			win.focus();
 			return win;
+		},
+
+		getWindowById: function (id) {
+			for (var len = this.windows.length; len--;) {
+				if (this.windows[len].id === id) {
+					return this.windows[len];
+				}
+			}
 		},
 
 		/**

@@ -664,6 +664,14 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			return parseInt(this.el.css('z-index'), 10);
 		},
 
+		set id(value) {
+			this._id = value;
+		},
+
+		get id() {
+			return this._id;
+		},
+
 		open: function() {
 			this.opened = true;
 			return this;
