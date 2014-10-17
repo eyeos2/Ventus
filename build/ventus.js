@@ -2010,7 +2010,7 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 		get nextWindowId () {
 			var nextId = (this._lastWindowId || 0) + 1;
 			this._lastWindowId = nextId;
-			return nextId;
+			return 'ventus' + nextId;
 		},
 
 		addOverlaysToAllWindows: function() {

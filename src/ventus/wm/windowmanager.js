@@ -117,7 +117,7 @@ define(function(require) {
 		get nextWindowId () {
 			var nextId = (this._lastWindowId || 0) + 1;
 			this._lastWindowId = nextId;
-			return nextId;
+			return 'ventus' + nextId;
 		},
 
 		addOverlaysToAllWindows: function() {
