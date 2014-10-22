@@ -173,7 +173,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					e.preventDefault();
 
 					if(this.enabled){
-						if (this.hasSpecialCloseBehaviour) {
+						if (this.dontExecuteEventHandlers) {
 							this.signals.emit('close', this);
 						} else {
 							this.close();
@@ -563,9 +563,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 		set closed(value) {
 			if(value) {
-				if (!this.hasSpecialCloseBehaviour) {
+				if (!this.dontExecuteEventHandlers) {
 					this.signals.emit('close', this);
 				}
+
 
 				this.el.addClass('closing');
 				this.el.onAnimationEnd(function(){
