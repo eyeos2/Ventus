@@ -32,7 +32,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			titlebar: true,
 			tiltAnimation: true,
 			imageUrl: null,
-			minimize: true
+			minimize: true,
+			dontExecuteEventHandlers: false
 		};
 		var shouldRenderImage = false;
 		if(options.imageUrl && options.imageUrl !== null) {
@@ -86,10 +87,11 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		this.enabled = true;
 		this.active = false;
 		this.closed = false;
-		this.maximized = false;
+		this.maximized = options.maximized || false;
 		this.minimized = false;
 
 		this.shouldtiltOnMove = options.tiltAnimation;
+		this.dontExecuteEventHandlers = options.dontExecuteEventHandlers; //if true, only emit events without execute it's handlers
 
 		// Properties
 		this.widget = false;
@@ -474,7 +476,11 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				this.signals.emit('maximize', this, this._restoreMaximized);
 			}
 			else {
-				this.signals.emit('restore', this, this._restoreMaximized);
+				if(this.dontExecuteEventHandlers){
+					this.signals.emit('restore', this);
+				}else{
+					this.signals.emit('restore', this, this._restoreMaximized);
+				}
 			}
 			this._maximized = value;
 		},
@@ -722,14 +728,14 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			this.resize(this.width, this.height);
 		},
 
-		maximize: function() {
+		maximize: function(maximized) {
 			this.el.addClass('maximazing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('maximazing');
 				this.resize(this.width, this.height);
 			}, this);
 
-			this.maximized = !this.maximized;
+			this.maximized = maximized || !this.maximized;
 			return this;
 		},
 

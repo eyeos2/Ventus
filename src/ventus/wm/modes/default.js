@@ -22,8 +22,8 @@ define(['less!../../../css/windowmanager'], function() {
 				win.resize(this.el.width(), this.el.height());
 			},
 
-			restore: function(win, restore) {
-				restore.call(win);
+			restore: function(win) {
+				win.restore();
 			},
 
 			minimize: function(win) {
