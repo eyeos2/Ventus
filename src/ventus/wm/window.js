@@ -575,6 +575,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 					// Remove element
 					this.$content.html('');
+					this.signals.emit('closeDone', this);
 				}, this);
 			}
 
@@ -735,7 +736,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				this.resize(this.width, this.height);
 			}, this);
 
-			this.maximized = maximized || !this.maximized;
 			this.maximized = maximized !== undefined && maximized !== null? maximized : !this.maximized;
 			return this;
 		},

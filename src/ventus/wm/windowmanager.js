@@ -151,7 +151,7 @@ define(function(require) {
 			// Connect window signals to the manager listeners
 			win.signals.on('focus', this._focus, this);
 			win.signals.on('blur', this._blur, this);
-			win.signals.on('close', this._close, this);
+			win.signals.on('closeDone', this._close, this);
 
 			// Connect window signals to manager mode actions
 			this.actions.forEach(function(action){
