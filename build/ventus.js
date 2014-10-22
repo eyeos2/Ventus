@@ -1040,7 +1040,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 					e.preventDefault();
 
 					if(this.enabled){
-						if (this.hasSpecialCloseBehaviour) {
+						if (this.dontExecuteEventHandlers) {
 							this.signals.emit('close', this);
 						} else {
 							this.close();
@@ -1430,9 +1430,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 		set closed(value) {
 			if(value) {
-				if (!this.hasSpecialCloseBehaviour) {
+				if (!this.dontExecuteEventHandlers) {
 					this.signals.emit('close', this);
 				}
+
 
 				this.el.addClass('closing');
 				this.el.onAnimationEnd(function(){
@@ -1442,6 +1443,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 					// Remove element
 					this.$content.html('');
+					this.signals.emit('closeDone', this);
 				}, this);
 			}
 
@@ -1602,7 +1604,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				this.resize(this.width, this.height);
 			}, this);
 
-			this.maximized = maximized || !this.maximized;
+			this.maximized = maximized !== undefined && maximized !== null? maximized : !this.maximized;
 			return this;
 		},
 
@@ -2050,7 +2052,7 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 			// Connect window signals to the manager listeners
 			win.signals.on('focus', this._focus, this);
 			win.signals.on('blur', this._blur, this);
-			win.signals.on('close', this._close, this);
+			win.signals.on('closeDone', this._close, this);
 
 			// Connect window signals to manager mode actions
 			this.actions.forEach(function(action){
