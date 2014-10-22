@@ -736,6 +736,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			}, this);
 
 			this.maximized = maximized || !this.maximized;
+			this.maximized = maximized !== undefined && maximized !== null? maximized : !this.maximized;
 			return this;
 		},
 
