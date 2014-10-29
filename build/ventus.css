@@ -615,6 +615,9 @@
   -ms-user-select: text;
   -o-user-select: text;
 }
+.wm-window.noresizable .wm-resize {
+  cursor: default;
+}
 .wm-window.noresizable .wm-window-box header.wm-window-title button.wm-maximize,
 .wm-window.noresizable .wm-window-box header.wm-window-title button.wm-minimize {
   display: none;
@@ -623,6 +626,12 @@
   overflow-y: hidden;
 }
 .wm-window.noresizable .wm-window-box button.wm-resize {
+  display: none;
+}
+.wm-window.maximized .wm-resize {
+  display: none;
+}
+.wm-window.maximized .wm-window-box button.wm-resize {
   display: none;
 }
 .wm-window.minimizing,

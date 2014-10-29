@@ -978,7 +978,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 		slots: {
 			move: function(e) {
-				if(!this.enabled || !this.movable) return;
+				if(!this.enabled || !this.movable || this.maximized) return;
 
 				this._moving = this.toLocal({
 					x: e.originalEvent.pageX,
@@ -1080,7 +1080,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
-					
 
 					e.preventDefault();
 				},
@@ -1340,6 +1339,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		set maximized(value) {
 			if(value) {
 				this._restoreMaximized = this.stamp();
+				this.el.addClass('maximized');
 				this.signals.emit('maximize', this, this._restoreMaximized);
 			}
 			else {
@@ -1348,6 +1348,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				}else{
 					this.signals.emit('restore', this, this._restoreMaximized);
 				}
+				this.el.removeClass('maximized');
 			}
 			this._maximized = value;
 		},

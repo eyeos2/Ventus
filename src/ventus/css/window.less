@@ -355,6 +355,17 @@
 	}
 }
 
+.wm-window.maximized {
+    .wm-resize {
+        display: none;
+    }
+    .wm-window-box {
+        button.wm-resize {
+            display: none;
+        }
+    }
+}
+
 .wm-window.minimizing,
 .wm-window.maximazing {
 	-webkit-transform: translate3d(0, 0, 0);
