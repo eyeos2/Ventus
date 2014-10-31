@@ -928,11 +928,15 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		if(options.opacity)
 			this.el.css('opacity', options.opacity);
 
-		if(options.minWidth)
+		this.minWidth = options.minWidth || 200;
+		if (options.minWidth) {
 			this.el.css('minWidth', options.minWidth);
+		}
 
-		if(options.minHeight)
+		this.minHeight = options.minHeight || 38;
+		if (options.minHeight) {
 			this.el.css('minHeight', options.minHeight);
+		}
 
 		// Cache content element
 		this.$content = this.el.find('.wm-content');
@@ -1217,76 +1221,69 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 			space: {
 				'mousemove': function(e) {
-					if (this._moving) {
-						if (this._moving['bottom-left']) {
-							this.move(
-								e.originalEvent.pageX - this._moving.x,
-								this._resizing.y
-							);
-						} else if (this._moving['top-right']) {
-							this.move(
-								this._resizing.x,
-								e.originalEvent.pageY - this._moving.y
-							);
-						} else if (this._moving['top-left']) {
-							this.move(
-								e.originalEvent.pageX - this._moving.x,
-								e.originalEvent.pageY - this._moving.y
-							);
-						} else {
-							this.move(
-								e.originalEvent.pageX - this._moving.x,
-								e.originalEvent.pageY - this._moving.y
-							);
-						}
-					}
-
+					var width, height,x ,y;
+					var ignoredWidth = 0, ignoredHeight = 0;
 					if(this._resizing){
 						if(this._resizing.left) {
-							this.resize(
-								this._resizing.width - e.originalEvent.pageX,
-								this._resizing.height
-							);
+							width =	this._resizing.width - e.originalEvent.pageX;
+							height = this._resizing.height;
 						}else if(this._resizing.bottom){
-							this.resize(
-								this._resizing.width,
-								e.originalEvent.pageY + this._resizing.height
-							);
+							width =	this._resizing.width;
+							height = e.originalEvent.pageY + this._resizing.height;
 						}else if(this._resizing.top){
-							this.resize(
-								this._resizing.width,
-								this._resizing.height - e.originalEvent.pageY
-							);
+							width =	this._resizing.width;
+							height = this._resizing.height - e.originalEvent.pageY;
 						}else if(this._resizing.right){
-							this.resize(
-								e.originalEvent.pageX + this._resizing.width,
-								this._resizing.height
-							);
+							width =	e.originalEvent.pageX + this._resizing.width;
+							height = this._resizing.height;
 						}else if(this._resizing["bottom-left"]){
-							this.resize(
-								this._resizing.width - e.originalEvent.pageX,
-								e.originalEvent.pageY + this._resizing.height
-							);
+							width =	this._resizing.width - e.originalEvent.pageX;
+							height = e.originalEvent.pageY + this._resizing.height;
 						}else if(this._resizing["top-right"]){
-							this.resize(
-								e.originalEvent.pageX + this._resizing.width,
-								this._resizing.height - e.originalEvent.pageY
-							);
+							width =	e.originalEvent.pageX + this._resizing.width;
+							height = this._resizing.height - e.originalEvent.pageY;
 						}else if(this._resizing["top-left"]){
-							this.resize(
-								this._resizing.width - e.originalEvent.pageX,
-								this._resizing.height - e.originalEvent.pageY
-							);
+							width =	this._resizing.width - e.originalEvent.pageX;
+							height = this._resizing.height - e.originalEvent.pageY;
 						}else{
-							this.resize(
-								e.originalEvent.pageX + this._resizing.width,
-								e.originalEvent.pageY + this._resizing.height
-							);
+							width =	e.originalEvent.pageX + this._resizing.width;
+							height = e.originalEvent.pageY + this._resizing.height;
 						}
+
+						if (width < this.minWidth) {
+							ignoredWidth = this.minWidth - width;
+							width = this.minWidth;
+						}
+
+						if (height < this.minHeight) {
+							ignoredHeight = this.minHeight - height;
+							height = this.minHeight;
+						}
+
+						this.resize(width, height);
 					}
 					if (this._resizer) {
 						this._resizer.resize(e);
 					}
+
+					if (this._moving) {
+						if (this._moving['bottom-left']) {
+							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
+							y = this._resizing.y;
+						} else if (this._moving['top-right']) {
+							x = this._resizing.x;
+							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
+						} else if (this._moving['top-left']) {
+							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
+							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
+						} else {
+							x = e.originalEvent.pageX - this._moving.x;
+							y = e.originalEvent.pageY - this._moving.y;
+						}
+
+						this.move(x, y);
+					}
+
 				},
 
 				'mouseup': function(e) {
