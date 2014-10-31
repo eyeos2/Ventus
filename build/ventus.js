@@ -1444,6 +1444,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 
 					// Remove element
 					this.$content.html('');
+					this.el.remove();
 					this.signals.emit('closeDone', this);
 				}, this);
 			}
