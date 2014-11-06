@@ -5,7 +5,7 @@ set -u
 set -x
 
 npm install
-bower install -f
+bower install 
 grunt test
 
 if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/master)" ]
