@@ -144,6 +144,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 		},
 
 		events: {
+			constants: {
+				LEFT_CLICK: 1
+			},
 
 			window: {
 				'click': function(e) {
@@ -153,7 +156,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				'mousedown': function(e) {
 					this.focus();
 
-					if(this.widget)
+					if(this.widget && e.which === this.events.constants.LEFT_CLICK )
 						this.slots.move.call(this, e);
 				},
 
@@ -163,8 +166,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				},
 
 				'.wm-window-title mousedown': function(e) {
-					this.addDivOverlay();
-					this.slots.move.call(this, e);
+					if(e.which === this.events.constants.LEFT_CLICK) {
+						this.addDivOverlay();
+						this.slots.move.call(this, e);
+					}
 				},
 
 				'.wm-window-title dblclick': function() {
