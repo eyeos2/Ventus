@@ -67,6 +67,11 @@
   display: none;
 }
 
+.mover-container {
+  border: 1px solid;
+  position: absolute;
+}
+
 
 /* Wobbly animation */
 @-webkit-keyframes wobbly {
