@@ -30,6 +30,9 @@ require.config({
 	shim: {
 		'Underscore': {
 			exports: '_'
+		},
+		'$': {
+			exports: '$'
 		}
 	},
 
