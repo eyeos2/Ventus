@@ -9,9 +9,10 @@ define([
 	'tpl!ventus/tpl/window',
 	'ventus/core/resizer',
 	'ventus/wm/mover/moverLimiter',
+	'ventus/wm/mover/moverContainer',
 	'less!ventus/css/window'
 ],
-function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
+function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 	'use strict';
 
 	var Window = function (options, manager) {
@@ -168,6 +169,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 				'.wm-window-title mousedown': function(e) {
 					if(e.which === this.events.constants.LEFT_CLICK) {
 						this.addDivOverlay();
+						this.moverContainer.add();
 						this.slots.move.call(this, e);
 					}
 				},
@@ -303,6 +305,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						y: e.originalEvent.pageY
 					});
 
+					this._moving['left'] = true;
+
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
@@ -322,6 +326,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
+
+					this._moving['top'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -408,18 +414,24 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 						if (this._moving['bottom-left']) {
 							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
 							y = this._resizing.y;
+							this.move(x, y);
 						} else if (this._moving['top-right']) {
 							x = this._resizing.x;
 							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
+							this.move(x, y);
 						} else if (this._moving['top-left']) {
 							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
 							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
 						} else {
 							x = e.originalEvent.pageX - this._moving.x;
 							y = e.originalEvent.pageY - this._moving.y;
+
+							if (this._moving['top'] || this._moving['left']) {
+								this.move(x, y);
+							}
 						}
 
-						this.move(x, y);
+						this.moverContainer.move(x, y);
 					}
 
 				},
@@ -433,6 +445,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 							this.el.removeClass('move');
 						}
 
+						this.move(this.moverContainer.x, this.moverContainer.y);
+						this.moverContainer.remove();
 						this.signals.emit('move', this);
 						this._moving = null;
 					}
@@ -460,7 +474,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter) {
 			this._space = el;
 			el.append(this.el);
 			el.listen(this.events.space, this);
-			this.moverLimiter = new MoverLimiter(this._space, this, this.$titlebar.height());
+			this.moverContainer = new MoverContainer(this._space, this);
+			this.moverLimiter = new MoverLimiter(this._space, this.moverContainer, this.$titlebar.height());
 		},
 
 		get space() {
