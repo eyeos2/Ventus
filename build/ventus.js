@@ -1363,6 +1363,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 						} else if (this._moving['top-left']) {
 							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
 							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
+							this.move(x, y);
 						} else {
 							x = e.originalEvent.pageX - this._moving.x;
 							y = e.originalEvent.pageY - this._moving.y;
