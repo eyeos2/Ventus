@@ -112,7 +112,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 	Window.prototype = {
 		_restore: null,
 		_moving: null,
-		_resizing: null,
+		_resizer: null,
 
 		slots: {
 			move: function(e) {
@@ -352,16 +352,17 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 							this.el.removeClass('move');
 						}
 
-						this.move(this.moverContainer.x, this.moverContainer.y);
+						if(!this._resizer){
+							this.move(this.moverContainer.x, this.moverContainer.y);
+						}
 						this.moverContainer.remove();
 						this.signals.emit('move', this);
 						this._moving = null;
 					}
 
-					if (this._resizing || this._resizer) {
+					if (this._resizer) {
 						this.el.removeClass('resizing');
 						this._restore = null;
-						this._resizing = null;
 						this._resizer = null;
 						this.signals.emit('resize', this);
 					}
