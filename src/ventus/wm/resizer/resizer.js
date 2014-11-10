@@ -1,13 +1,13 @@
 
 define([
-	'ventus/core/sideresizers/topResizer',
-	'ventus/core/sideresizers/topLeftResizer',
-	'ventus/core/sideresizers/topRightResizer',
-	'ventus/core/sideresizers/leftResizer',
-	'ventus/core/sideresizers/rightResizer',
-	'ventus/core/sideresizers/bottomResizer',
-	'ventus/core/sideresizers/bottomLeftResizer',
-	'ventus/core/sideresizers/bottomRightResizer'
+	'ventus/wm/resizer/sideresizers/topResizer',
+	'ventus/wm/resizer/sideresizers/topLeftResizer',
+	'ventus/wm/resizer/sideresizers/topRightResizer',
+	'ventus/wm/resizer/sideresizers/leftResizer',
+	'ventus/wm/resizer/sideresizers/rightResizer',
+	'ventus/wm/resizer/sideresizers/bottomResizer',
+	'ventus/wm/resizer/sideresizers/bottomLeftResizer',
+	'ventus/wm/resizer/sideresizers/bottomRightResizer'
 ],
 
 function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer, BottomResizer, BottomLeftResizer, BottomRightResizer) {

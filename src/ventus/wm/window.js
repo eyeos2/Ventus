@@ -7,7 +7,7 @@ define([
 	'ventus/core/emitter',
 	'ventus/core/view',
 	'tpl!ventus/tpl/window',
-	'ventus/core/resizer',
+	'ventus/wm/resizer/resizer',
 	'ventus/wm/mover/moverLimiter',
 	'ventus/wm/mover/moverContainer',
 	'less!ventus/css/window'

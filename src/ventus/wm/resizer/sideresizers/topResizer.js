@@ -1,11 +1,12 @@
 define([
-	'ventus/core/sideresizers/resizerMovement'
+	'ventus/wm/resizer/sideresizers/resizerMovement'
 ], function(resizerMovement) {
-	var TopRightResizer = function (window, initialEvent) {
+
+	var topResizer = function (window, initialEvent) {
 		this.window = window;
 
 		this.initialSize = {
-			width: window.width - initialEvent.originalEvent.pageX,
+			width: window.width,
 			height: window.height + initialEvent.originalEvent.pageY
 		};
 
@@ -15,8 +16,8 @@ define([
 		});
 	};
 
-	TopRightResizer.prototype.resize = function(finalEvent) {
-		var width = this.initialSize.width + finalEvent.originalEvent.pageX;
+	topResizer.prototype.resize = function(finalEvent) {
+		var width = this.initialSize.width;
 		var height = this.initialSize.height - finalEvent.originalEvent.pageY;
 
 		this.window.resize(width, height);
@@ -28,6 +29,7 @@ define([
 		};
 		var ignoredSize = resizerMovement.calculateIgnoredSize(this.window,  width, height);
 		var resizeMovement = resizerMovement.calculateResizeMovement(this.initialPosition, finalPosition, ignoredSize);
+
 		this.window.move(null, resizeMovement.y);
 
 		return {
@@ -36,5 +38,5 @@ define([
 		};
 	};
 
-	return TopRightResizer;
+	return topResizer;
 });
