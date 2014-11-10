@@ -217,10 +217,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 				'button.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-					this._resizing = {
-						width: this.width - e.originalEvent.pageX,
-						height: this.height - e.originalEvent.pageY
-					};
+
+					this._resizer = new Resizer(this, e, 'bottom-right');
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -231,17 +229,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'button.top-right.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						"top-right": true,
-						width: this.width - e.originalEvent.pageX,
-						height: this.height + e.originalEvent.pageY
-					};
+					this._resizer = new Resizer(this, e, 'top-right');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
-					this._moving['top-right'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -251,18 +244,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 				'button.top-left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-
-					this._resizing = {
-						"top-left": true,
-						width: this.width + e.originalEvent.pageX,
-						height: this.height + e.originalEvent.pageY
-					};
+					this._resizer = new Resizer(this, e, 'top-left');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
-					this._moving['top-left'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -273,17 +260,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'button.bottom-left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						"bottom-left": true,
-						width: this.width + e.originalEvent.pageX,
-						height: this.height - e.originalEvent.pageY
-					};
+					this._resizer = new Resizer(this, e, 'bottom-left');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
-					this._moving['bottom-left'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -293,19 +275,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 				'.wm-window-border.left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-
-					this._resizing = {
-						left: true,
-						width: this.width + e.originalEvent.pageX,
-						height: this.height
-					};
+					this._resizer = new Resizer(this, e, 'left');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
-
-					this._moving['left'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -315,11 +290,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'.wm-window-border.top.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-//					this._resizing = {
-//						top: true,
-//						width: this.width,
-//						height: this.height + e.originalEvent.pageY
-//					};
 					this._resizer = new Resizer(this, e, 'top');
 
 					this._moving = this.toLocal({
@@ -327,7 +297,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 						y: e.originalEvent.pageY
 					});
 
-					this._moving['top'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -337,11 +306,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'.wm-window-border.bottom.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						bottom: true,
-						width: this.width,
-						height: this.height - e.originalEvent.pageY
-					};
+					this._resizer = new Resizer(this, e, 'bottom');
+
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
@@ -351,11 +317,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'.wm-window-border.right.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						right: true,
-						width: this.width - e.originalEvent.pageX,
-						height: this.height
-					};
+					this._resizer = new Resizer(this, e, 'right');
+
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
@@ -365,72 +328,15 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 			space: {
 				'mousemove': function(e) {
-					var width, height,x ,y;
-					var ignoredWidth = 0, ignoredHeight = 0;
-					if(this._resizing){
-						if(this._resizing.left) {
-							width =	this._resizing.width - e.originalEvent.pageX;
-							height = this._resizing.height;
-						}else if(this._resizing.bottom){
-							width =	this._resizing.width;
-							height = e.originalEvent.pageY + this._resizing.height;
-						}else if(this._resizing.top){
-							width =	this._resizing.width;
-							height = this._resizing.height - e.originalEvent.pageY;
-						}else if(this._resizing.right){
-							width =	e.originalEvent.pageX + this._resizing.width;
-							height = this._resizing.height;
-						}else if(this._resizing["bottom-left"]){
-							width =	this._resizing.width - e.originalEvent.pageX;
-							height = e.originalEvent.pageY + this._resizing.height;
-						}else if(this._resizing["top-right"]){
-							width =	e.originalEvent.pageX + this._resizing.width;
-							height = this._resizing.height - e.originalEvent.pageY;
-						}else if(this._resizing["top-left"]){
-							width =	this._resizing.width - e.originalEvent.pageX;
-							height = this._resizing.height - e.originalEvent.pageY;
-						}else{
-							width =	e.originalEvent.pageX + this._resizing.width;
-							height = e.originalEvent.pageY + this._resizing.height;
-						}
+					var x, y;
 
-						if (width < this.minWidth) {
-							ignoredWidth = this.minWidth - width;
-							width = this.minWidth;
-						}
-
-						if (height < this.minHeight) {
-							ignoredHeight = this.minHeight - height;
-							height = this.minHeight;
-						}
-
-						this.resize(width, height);
-					}
 					if (this._resizer) {
 						this._resizer.resize(e);
 					}
 
 					if (this._moving) {
-						if (this._moving['bottom-left']) {
-							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
-							y = this._resizing.y;
-							this.move(x, y);
-						} else if (this._moving['top-right']) {
-							x = this._resizing.x;
-							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
-							this.move(x, y);
-						} else if (this._moving['top-left']) {
-							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
-							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
-							this.move(x, y);
-						} else {
-							x = e.originalEvent.pageX - this._moving.x;
-							y = e.originalEvent.pageY - this._moving.y;
-
-							if (this._moving['top'] || this._moving['left']) {
-								this.move(x, y);
-							}
-						}
+						x = e.originalEvent.pageX - this._moving.x;
+						y = e.originalEvent.pageY - this._moving.y;
 
 						this.moverContainer.move(x, y);
 					}
@@ -649,6 +555,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 		},
 
 		set width(value) {
+			if (this.minWidth && value < this.minWidth) {
+				value = this.minWidth;
+			}
+
 			this.el.width(value);
 		},
 
@@ -660,6 +570,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 			// This shouldn't be done if flexible box model
 			// worked properly with overflow-y: auto
 			//this.$content.height(value - this.$header.outerHeight());
+
+			if (this.minHeight && value < this.minHeight) {
+				value = this.minHeight;
+			}
 
 			this.el.height(value);
 		},

@@ -1,12 +1,26 @@
 
 define([
-	'ventus/core/sideresizers/topResizer'
+	'ventus/core/sideresizers/topResizer',
+	'ventus/core/sideresizers/topLeftResizer',
+	'ventus/core/sideresizers/topRightResizer',
+	'ventus/core/sideresizers/leftResizer',
+	'ventus/core/sideresizers/rightResizer',
+	'ventus/core/sideresizers/bottomResizer',
+	'ventus/core/sideresizers/bottomLeftResizer',
+	'ventus/core/sideresizers/bottomRightResizer'
 ],
 
-function(topResizer) {
+function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer, BottomResizer, BottomLeftResizer, BottomRightResizer) {
 	var sideResizerFactory = {
 		map: {
-			'top': topResizer
+			'top': topResizer,
+			'top-left': TopLeftResizer,
+			'top-right': TopRightResizer,
+			'left': LeftResizer,
+			'right': RightResizer,
+			'bottom': BottomResizer,
+			'bottom-left': BottomLeftResizer,
+			'bottom-right': BottomRightResizer
 		},
 
 		getInstance: function(type, window, event) {
@@ -22,7 +36,7 @@ function(topResizer) {
 	};
 
 	Resizer.prototype.resize = function(event) {
-		this.sideResizer.resize(event);
+		return this.sideResizer.resize(event);
 	};
 
 	return Resizer;
