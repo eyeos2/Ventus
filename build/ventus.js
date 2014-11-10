@@ -723,33 +723,338 @@ return this["Handlebars"]["templates"];
 
 });
 
-define('ventus/core/sideresizers/topResizer',[], function() {
+define('ventus/wm/resizer/sideresizers/resizerMovement',[], function() {
+	var resizerMovement = {
+
+		calculateIgnoredSize : function (window, width, height) {
+			var ignoredWidth = 0,
+				ignoredHeight = 0;
+
+			if (width < window.minWidth) {
+				ignoredWidth = window.minWidth - width;
+			}
+			if (height < window.minHeight) {
+				ignoredHeight = window.minHeight - height;
+			}
+			return {
+				width: ignoredWidth,
+				height: ignoredHeight
+			}
+		},
+
+		calculateResizeMovement: function (initialPosition, finalPosition, ignoredSize) {
+			return {
+				x: finalPosition.x - initialPosition.x - ignoredSize.width,
+				y: finalPosition.y - initialPosition.y - ignoredSize.height
+			}
+		}
+	};
+
+	return resizerMovement;
+});
+define('ventus/wm/resizer/sideresizers/topResizer',[
+	'ventus/wm/resizer/sideresizers/resizerMovement'
+], function(resizerMovement) {
+
 	var topResizer = function (window, initialEvent) {
 		this.window = window;
+
 		this.initialSize = {
 			width: window.width,
 			height: window.height + initialEvent.originalEvent.pageY
 		};
+
+		this.initialPosition = window.toLocal({
+			x: initialEvent.originalEvent.pageX,
+			y: initialEvent.originalEvent.pageY
+		});
 	};
 
 	topResizer.prototype.resize = function(finalEvent) {
-		this.window.resize(
-			this.initialSize.width,
-			this.initialSize.height - finalEvent.originalEvent.pageY
-		);
+		var width = this.initialSize.width;
+		var height = this.initialSize.height - finalEvent.originalEvent.pageY;
+
+		this.window.resize(width, height);
+
+
+		var finalPosition = {
+			x: finalEvent.originalEvent.pageX,
+			y: finalEvent.originalEvent.pageY
+		};
+		var ignoredSize = resizerMovement.calculateIgnoredSize(this.window,  width, height);
+		var resizeMovement = resizerMovement.calculateResizeMovement(this.initialPosition, finalPosition, ignoredSize);
+
+		this.window.move(null, resizeMovement.y);
+
+		return {
+			width: width,
+			height: height
+		};
 	};
 
 	return topResizer;
 });
+define('ventus/wm/resizer/sideresizers/topLeftResizer',[
+	'ventus/wm/resizer/sideresizers/resizerMovement'
+], function(resizerMovement) {
+	var TopLeftResizer = function (window, initialEvent) {
+		this.window = window;
 
-define('ventus/core/resizer',[
-	'ventus/core/sideresizers/topResizer'
+		this.initialSize = {
+			width: window.width + initialEvent.originalEvent.pageX,
+			height: window.height + initialEvent.originalEvent.pageY
+		};
+
+		this.initialPosition = window.toLocal({
+			x: initialEvent.originalEvent.pageX,
+			y: initialEvent.originalEvent.pageY
+		});
+	};
+
+	TopLeftResizer.prototype.resize = function(finalEvent) {
+		var width,
+			height;
+
+		width = this.initialSize.width - finalEvent.originalEvent.pageX;
+		height = this.initialSize.height - finalEvent.originalEvent.pageY;
+
+		this.window.resize(width, height);
+
+
+		var finalPosition = {
+			x: finalEvent.originalEvent.pageX,
+			y: finalEvent.originalEvent.pageY
+		};
+		var ignoredSize = resizerMovement.calculateIgnoredSize(this.window,  width, height);
+		var resizeMovement = resizerMovement.calculateResizeMovement(this.initialPosition, finalPosition, ignoredSize);
+		this.window.move(resizeMovement.x, resizeMovement.y);
+
+		return {
+			width: width,
+			height: height
+		};
+	};
+
+	return TopLeftResizer;
+});
+define('ventus/wm/resizer/sideresizers/topRightResizer',[
+	'ventus/wm/resizer/sideresizers/resizerMovement'
+], function(resizerMovement) {
+	var TopRightResizer = function (window, initialEvent) {
+		this.window = window;
+
+		this.initialSize = {
+			width: window.width - initialEvent.originalEvent.pageX,
+			height: window.height + initialEvent.originalEvent.pageY
+		};
+
+		this.initialPosition = window.toLocal({
+			x: initialEvent.originalEvent.pageX,
+			y: initialEvent.originalEvent.pageY
+		});
+	};
+
+	TopRightResizer.prototype.resize = function(finalEvent) {
+		var width = this.initialSize.width + finalEvent.originalEvent.pageX;
+		var height = this.initialSize.height - finalEvent.originalEvent.pageY;
+
+		this.window.resize(width, height);
+
+
+		var finalPosition = {
+			x: finalEvent.originalEvent.pageX,
+			y: finalEvent.originalEvent.pageY
+		};
+		var ignoredSize = resizerMovement.calculateIgnoredSize(this.window,  width, height);
+		var resizeMovement = resizerMovement.calculateResizeMovement(this.initialPosition, finalPosition, ignoredSize);
+		this.window.move(null, resizeMovement.y);
+
+		return {
+			width: width,
+			height: height
+		};
+	};
+
+	return TopRightResizer;
+});
+define('ventus/wm/resizer/sideresizers/leftResizer',[
+	'ventus/wm/resizer/sideresizers/resizerMovement'
+], function (resizerMovement) {
+	var LeftResizer = function (window, initialEvent) {
+		this.window = window;
+
+		this.initialSize = {
+			width: window.width + initialEvent.originalEvent.pageX,
+			height: window.height
+		};
+
+		this.initialPosition = window.toLocal({
+			x: initialEvent.originalEvent.pageX,
+			y: initialEvent.originalEvent.pageY
+		});
+	};
+
+	LeftResizer.prototype.resize = function(finalEvent) {
+		var width = this.initialSize.width - finalEvent.originalEvent.pageX;
+		var height = this.initialSize.height;
+
+		this.window.resize(width, height);
+
+
+		var finalPosition = {
+			x: finalEvent.originalEvent.pageX,
+			y: finalEvent.originalEvent.pageY
+		};
+		var ignoredSize = resizerMovement.calculateIgnoredSize(this.window,  width, height);
+		var resizeMovement = resizerMovement.calculateResizeMovement(this.initialPosition, finalPosition, ignoredSize);
+
+		this.window.move(resizeMovement.x, null);
+
+		return {
+			width: width,
+			height: height
+		};
+	};
+
+	return LeftResizer;
+});
+define('ventus/wm/resizer/sideresizers/rightResizer',[], function() {
+	var RightResizer = function (window, initialEvent) {
+		this.window = window;
+		this.initialSize = {
+			width: window.width - initialEvent.originalEvent.pageX,
+			height: window.height
+		};
+	};
+
+	RightResizer.prototype.resize = function(finalEvent) {
+
+		var width = this.initialSize.width + finalEvent.originalEvent.pageX;
+		var height = this.initialSize.height;
+
+		this.window.resize(width, height);
+
+		return {
+			width: width,
+			height: height
+		};
+	};
+
+	return RightResizer;
+});
+define('ventus/wm/resizer/sideresizers/bottomResizer',[], function() {
+	var BottomResizer = function (window, initialEvent) {
+		this.window = window;
+		this.initialSize = {
+			width: window.width,
+			height: window.height - initialEvent.originalEvent.pageY
+		};
+	};
+
+	BottomResizer.prototype.resize = function(finalEvent) {
+		var width = this.initialSize.width;
+		var height = this.initialSize.height + finalEvent.originalEvent.pageY;
+
+		this.window.resize(width, height);
+
+		return {
+			width: width,
+			height: height
+		};
+	};
+
+	return BottomResizer;
+});
+define('ventus/wm/resizer/sideresizers/bottomLeftResizer',[
+	'ventus/wm/resizer/sideresizers/resizerMovement'
+], function(resizerMovement) {
+	var BottomLeftResizer = function (window, initialEvent) {
+		this.window = window;
+
+		this.initialSize = {
+			width: window.width + initialEvent.originalEvent.pageX,
+			height: window.height - initialEvent.originalEvent.pageY
+		};
+
+		this.initialPosition = window.toLocal({
+			x: initialEvent.originalEvent.pageX,
+			y: initialEvent.originalEvent.pageY
+		});
+	};
+
+	BottomLeftResizer.prototype.resize = function(finalEvent) {
+		var width = this.initialSize.width - finalEvent.originalEvent.pageX;
+		var height = this.initialSize.height + finalEvent.originalEvent.pageY;
+
+		this.window.resize(width, height);
+
+
+		var finalPosition = {
+			x: finalEvent.originalEvent.pageX,
+			y: finalEvent.originalEvent.pageY
+		};
+		var ignoredSize = resizerMovement.calculateIgnoredSize(this.window,  width, height);
+		var resizeMovement = resizerMovement.calculateResizeMovement(this.initialPosition, finalPosition, ignoredSize);
+		this.window.move(resizeMovement.x, null);
+
+		return {
+			width: width,
+			height: height
+		};
+	};
+
+
+	return BottomLeftResizer;
+});
+define('ventus/wm/resizer/sideresizers/bottomRightResizer',[], function() {
+	var BottomRightResizer = function (window, initialEvent) {
+		this.window = window;
+		this.initialSize = {
+			width: window.width - initialEvent.originalEvent.pageX,
+			height: window.height - initialEvent.originalEvent.pageY
+		};
+	};
+
+	BottomRightResizer.prototype.resize = function(finalEvent) {
+		var width,
+			height;
+
+		width = this.initialSize.width + finalEvent.originalEvent.pageX;
+		height = this.initialSize.height + finalEvent.originalEvent.pageY;
+
+		this.window.resize(width, height);
+
+		return {
+			width: width,
+			height: height
+		};
+	};
+
+	return BottomRightResizer;
+});
+
+define('ventus/wm/resizer/resizer',[
+	'ventus/wm/resizer/sideresizers/topResizer',
+	'ventus/wm/resizer/sideresizers/topLeftResizer',
+	'ventus/wm/resizer/sideresizers/topRightResizer',
+	'ventus/wm/resizer/sideresizers/leftResizer',
+	'ventus/wm/resizer/sideresizers/rightResizer',
+	'ventus/wm/resizer/sideresizers/bottomResizer',
+	'ventus/wm/resizer/sideresizers/bottomLeftResizer',
+	'ventus/wm/resizer/sideresizers/bottomRightResizer'
 ],
 
-function(topResizer) {
+function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer, BottomResizer, BottomLeftResizer, BottomRightResizer) {
 	var sideResizerFactory = {
 		map: {
-			'top': topResizer
+			'top': topResizer,
+			'top-left': TopLeftResizer,
+			'top-right': TopRightResizer,
+			'left': LeftResizer,
+			'right': RightResizer,
+			'bottom': BottomResizer,
+			'bottom-left': BottomLeftResizer,
+			'bottom-right': BottomRightResizer
 		},
 
 		getInstance: function(type, window, event) {
@@ -765,7 +1070,7 @@ function(topResizer) {
 	};
 
 	Resizer.prototype.resize = function(event) {
-		this.sideResizer.resize(event);
+		return this.sideResizer.resize(event);
 	};
 
 	return Resizer;
@@ -948,7 +1253,7 @@ define('ventus/wm/window',[
 	'ventus/core/emitter',
 	'ventus/core/view',
 	'tpl!ventus/tpl/window',
-	'ventus/core/resizer',
+	'ventus/wm/resizer/resizer',
 	'ventus/wm/mover/moverLimiter',
 	'ventus/wm/mover/moverContainer',
 	'less!ventus/css/window'
@@ -1053,7 +1358,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 	Window.prototype = {
 		_restore: null,
 		_moving: null,
-		_resizing: null,
+		_resizer: null,
 
 		slots: {
 			move: function(e) {
@@ -1158,10 +1463,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 				'button.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-					this._resizing = {
-						width: this.width - e.originalEvent.pageX,
-						height: this.height - e.originalEvent.pageY
-					};
+
+					this._resizer = new Resizer(this, e, 'bottom-right');
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -1172,17 +1475,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'button.top-right.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						"top-right": true,
-						width: this.width - e.originalEvent.pageX,
-						height: this.height + e.originalEvent.pageY
-					};
+					this._resizer = new Resizer(this, e, 'top-right');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
-					this._moving['top-right'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -1192,18 +1490,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 				'button.top-left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-
-					this._resizing = {
-						"top-left": true,
-						width: this.width + e.originalEvent.pageX,
-						height: this.height + e.originalEvent.pageY
-					};
+					this._resizer = new Resizer(this, e, 'top-left');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
-					this._moving['top-left'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -1214,17 +1506,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'button.bottom-left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						"bottom-left": true,
-						width: this.width + e.originalEvent.pageX,
-						height: this.height - e.originalEvent.pageY
-					};
+					this._resizer = new Resizer(this, e, 'bottom-left');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
-					this._moving['bottom-left'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -1234,19 +1521,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 				'.wm-window-border.left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
-
-					this._resizing = {
-						left: true,
-						width: this.width + e.originalEvent.pageX,
-						height: this.height
-					};
+					this._resizer = new Resizer(this, e, 'left');
 
 					this._moving = this.toLocal({
 						x: e.originalEvent.pageX,
 						y: e.originalEvent.pageY
 					});
-
-					this._moving['left'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -1256,11 +1536,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'.wm-window-border.top.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-//					this._resizing = {
-//						top: true,
-//						width: this.width,
-//						height: this.height + e.originalEvent.pageY
-//					};
 					this._resizer = new Resizer(this, e, 'top');
 
 					this._moving = this.toLocal({
@@ -1268,7 +1543,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 						y: e.originalEvent.pageY
 					});
 
-					this._moving['top'] = true;
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -1278,11 +1552,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'.wm-window-border.bottom.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						bottom: true,
-						width: this.width,
-						height: this.height - e.originalEvent.pageY
-					};
+					this._resizer = new Resizer(this, e, 'bottom');
+
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
@@ -1292,11 +1563,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'.wm-window-border.right.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
-					this._resizing = {
-						right: true,
-						width: this.width - e.originalEvent.pageX,
-						height: this.height
-					};
+					this._resizer = new Resizer(this, e, 'right');
+
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
@@ -1306,72 +1574,15 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 			space: {
 				'mousemove': function(e) {
-					var width, height,x ,y;
-					var ignoredWidth = 0, ignoredHeight = 0;
-					if(this._resizing){
-						if(this._resizing.left) {
-							width =	this._resizing.width - e.originalEvent.pageX;
-							height = this._resizing.height;
-						}else if(this._resizing.bottom){
-							width =	this._resizing.width;
-							height = e.originalEvent.pageY + this._resizing.height;
-						}else if(this._resizing.top){
-							width =	this._resizing.width;
-							height = this._resizing.height - e.originalEvent.pageY;
-						}else if(this._resizing.right){
-							width =	e.originalEvent.pageX + this._resizing.width;
-							height = this._resizing.height;
-						}else if(this._resizing["bottom-left"]){
-							width =	this._resizing.width - e.originalEvent.pageX;
-							height = e.originalEvent.pageY + this._resizing.height;
-						}else if(this._resizing["top-right"]){
-							width =	e.originalEvent.pageX + this._resizing.width;
-							height = this._resizing.height - e.originalEvent.pageY;
-						}else if(this._resizing["top-left"]){
-							width =	this._resizing.width - e.originalEvent.pageX;
-							height = this._resizing.height - e.originalEvent.pageY;
-						}else{
-							width =	e.originalEvent.pageX + this._resizing.width;
-							height = e.originalEvent.pageY + this._resizing.height;
-						}
+					var x, y;
 
-						if (width < this.minWidth) {
-							ignoredWidth = this.minWidth - width;
-							width = this.minWidth;
-						}
-
-						if (height < this.minHeight) {
-							ignoredHeight = this.minHeight - height;
-							height = this.minHeight;
-						}
-
-						this.resize(width, height);
-					}
 					if (this._resizer) {
 						this._resizer.resize(e);
 					}
 
 					if (this._moving) {
-						if (this._moving['bottom-left']) {
-							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
-							y = this._resizing.y;
-							this.move(x, y);
-						} else if (this._moving['top-right']) {
-							x = this._resizing.x;
-							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
-							this.move(x, y);
-						} else if (this._moving['top-left']) {
-							x = e.originalEvent.pageX - this._moving.x - ignoredWidth;
-							y = e.originalEvent.pageY - this._moving.y - ignoredHeight;
-							this.move(x, y);
-						} else {
-							x = e.originalEvent.pageX - this._moving.x;
-							y = e.originalEvent.pageY - this._moving.y;
-
-							if (this._moving['top'] || this._moving['left']) {
-								this.move(x, y);
-							}
-						}
+						x = e.originalEvent.pageX - this._moving.x;
+						y = e.originalEvent.pageY - this._moving.y;
 
 						this.moverContainer.move(x, y);
 					}
@@ -1387,16 +1598,17 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 							this.el.removeClass('move');
 						}
 
-						this.move(this.moverContainer.x, this.moverContainer.y);
+						if(!this._resizer){
+							this.move(this.moverContainer.x, this.moverContainer.y);
+						}
 						this.moverContainer.remove();
 						this.signals.emit('move', this);
 						this._moving = null;
 					}
 
-					if (this._resizing || this._resizer) {
+					if (this._resizer) {
 						this.el.removeClass('resizing');
 						this._restore = null;
-						this._resizing = null;
 						this._resizer = null;
 						this.signals.emit('resize', this);
 					}
@@ -1590,6 +1802,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 		},
 
 		set width(value) {
+			if (this.minWidth && value < this.minWidth) {
+				value = this.minWidth;
+			}
+
 			this.el.width(value);
 		},
 
@@ -1601,6 +1817,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 			// This shouldn't be done if flexible box model
 			// worked properly with overflow-y: auto
 			//this.$content.height(value - this.$header.outerHeight());
+
+			if (this.minHeight && value < this.minHeight) {
+				value = this.minHeight;
+			}
 
 			this.el.height(value);
 		},
