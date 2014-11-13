@@ -2231,10 +2231,12 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 	var WindowManager = function ($baseElem) {
 		var self = this;
 		$baseElem = $baseElem || $(document.body);
-		this.el = view('<div class="wm-space"><div class="wm-overlay" /></div>');
-		$baseElem.prepend(this.el);
+		$baseElem.addClass('wm-space');
+		this.el = $baseElem;
 
-		this.$overlay = this.el.find('.wm-overlay');
+		this.$overlay = view('<div class="wm-overlay" />');
+		$baseElem.prepend(this.$overlay);
+
 		this.$overlay.css('z-index', this._baseZ-1);
 
 		// Generate mode plugin actions wrapper
