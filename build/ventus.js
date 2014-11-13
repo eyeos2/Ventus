@@ -1186,6 +1186,7 @@ function(view) {
 		this.height =  null;
 		this.x =  null;
 		this.y =  null;
+		this.z =  null;
 	};
 
 	MoverContainer.prototype = {
@@ -1197,12 +1198,19 @@ function(view) {
 			this.el.css('top', value);
 		},
 
+		set z(value) {
+			this.el.css('z-index', value);
+		},
+
 		get x() {
 			return parseInt(this.el.css('left'), 10);
 		},
 
 		get y() {
 			return parseInt(this.el.css('top'), 10);
+		},
+		get z() {
+			return parseInt(this.el.css('z-index'), 10);
 		},
 
 		set width(value) {
@@ -1226,6 +1234,8 @@ function(view) {
 		this.space.append(this.el);
 		this.x = this.window.x;
 		this.y = this.window.y;
+		this.z = this.window.z;
+
 		this.width = this.window.width;
 		this.height = this.window.height;
 	};

@@ -9,6 +9,7 @@ define([
 				window = {
 					x: 50,
 					y: 50,
+					z: 1003,
 					width: 400,
 					height: 700
 				};
@@ -36,6 +37,7 @@ define([
 					exercise();
 					assert.equal(sut.x, window.x);
 					assert.equal(sut.y, window.y);
+					assert.equal(sut.z, window.z);
 				}));
 
 				test('should set the size of the view to the same size than the window', sinon.test(function () {
