@@ -1336,6 +1336,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 		// Cache header element
 		this.$titlebar = this.el.find('header');
 
+		this.border = {
+			size: 1 //px;
+		};
+
 		this.width = options.width || 400;
 		this.height = options.height || 200;
 
@@ -1884,6 +1888,13 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 			}
 			return this;
 		},
+
+		resizeContent: function(w, h) {
+			var windowWidth = w + (this.border.size * 2);
+			var windowHeight = h + this.$titlebar.height();
+			return this.resize(windowWidth, windowHeight);
+		},
+
 
 		move: function(x, y) {
 			this.x = x;
