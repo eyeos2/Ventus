@@ -22,7 +22,7 @@
             <button class="wm-resize top-right">&nbsp;</button>
             <button class="wm-resize top-left">&nbsp;</button>
             <button class="wm-resize bottom-left">&nbsp;</button>
-            <button class="wm-resize">&nbsp;</button>
+            <button class="wm-resize bottom-right">&nbsp;</button>
         </div>
 	    <div class="wm-window-border right wm-resize"></div>
     </div>

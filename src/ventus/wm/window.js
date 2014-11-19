@@ -219,7 +219,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 					e.preventDefault();
 				},
 
-				'button.wm-resize mousedown': function(e) {
+				'button.bottom-right.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'bottom-right');
