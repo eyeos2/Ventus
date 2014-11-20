@@ -358,9 +358,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 						if(!this._resizer){
 							this.move(this.moverContainer.x, this.moverContainer.y);
+							this.moverContainer.remove();
+							this.signals.emit('move', this);
 						}
-						this.moverContainer.remove();
-						this.signals.emit('move', this);
 						this._moving = null;
 					}
 
