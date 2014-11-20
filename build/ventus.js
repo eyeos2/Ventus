@@ -715,7 +715,7 @@ function program3(depth0,data) {
   else { helper = (depth0 && depth0.minimize); stack1 = typeof helper === functionType ? helper.call(depth0, options) : helper; }
   if (!helpers.minimize) { stack1 = blockHelperMissing.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data}); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n                    <button class=\"wm-maximize\">&nbsp;</button>\n                    <button class=\"wm-close\">&nbsp;</button>\n                </div>\n            </header>\n\n            <section class=\"wm-content\"></section>\n\n            <button class=\"wm-resize top-right\">&nbsp;</button>\n            <button class=\"wm-resize top-left\">&nbsp;</button>\n            <button class=\"wm-resize bottom-left\">&nbsp;</button>\n            <button class=\"wm-resize\">&nbsp;</button>\n        </div>\n	    <div class=\"wm-window-border right wm-resize\"></div>\n    </div>\n\n	<div class=\"wm-window-border bottom wm-resize\"></div>\n	<div class=\"wm-window-overlay\"></div>\n</div>\n\n";
+  buffer += "\n                    <button class=\"wm-maximize\">&nbsp;</button>\n                    <button class=\"wm-close\">&nbsp;</button>\n                </div>\n            </header>\n\n            <section class=\"wm-content\"></section>\n\n            <button class=\"wm-resize top-right\">&nbsp;</button>\n            <button class=\"wm-resize top-left\">&nbsp;</button>\n            <button class=\"wm-resize bottom-left\">&nbsp;</button>\n            <button class=\"wm-resize bottom-right\">&nbsp;</button>\n        </div>\n	    <div class=\"wm-window-border right wm-resize\"></div>\n    </div>\n\n	<div class=\"wm-window-border bottom wm-resize\"></div>\n	<div class=\"wm-window-overlay\"></div>\n</div>\n\n";
   return buffer;
   });
 
@@ -1032,99 +1032,6 @@ define('ventus/wm/resizer/sideresizers/bottomRightResizer',[], function() {
 
 	return BottomRightResizer;
 });
-
-define('ventus/wm/resizer/resizer',[
-	'ventus/wm/resizer/sideresizers/topResizer',
-	'ventus/wm/resizer/sideresizers/topLeftResizer',
-	'ventus/wm/resizer/sideresizers/topRightResizer',
-	'ventus/wm/resizer/sideresizers/leftResizer',
-	'ventus/wm/resizer/sideresizers/rightResizer',
-	'ventus/wm/resizer/sideresizers/bottomResizer',
-	'ventus/wm/resizer/sideresizers/bottomLeftResizer',
-	'ventus/wm/resizer/sideresizers/bottomRightResizer'
-],
-
-function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer, BottomResizer, BottomLeftResizer, BottomRightResizer) {
-	var sideResizerFactory = {
-		map: {
-			'top': topResizer,
-			'top-left': TopLeftResizer,
-			'top-right': TopRightResizer,
-			'left': LeftResizer,
-			'right': RightResizer,
-			'bottom': BottomResizer,
-			'bottom-left': BottomLeftResizer,
-			'bottom-right': BottomRightResizer
-		},
-
-		getInstance: function(type, window, event) {
-			return new this.map[type](window, event);
-		}
-	};
-
-
-	var Resizer =  function (window, event, type) {
-		this.window = window;
-		this.event = event;
-		this.sideResizer = sideResizerFactory.getInstance(type, window, event);
-	};
-
-	Resizer.prototype.resize = function(event) {
-		return this.sideResizer.resize(event);
-	};
-
-	return Resizer;
-});
-
-define('ventus/wm/mover/moverLimiter',[],
-
-	function () {
-		
-
-		var MoverLimiter = function (space, window, offset) {
-			this.space = space;
-			this.window = window;
-			this.offset = offset || 30; //px
-
-			calculateBounds.call(this, space);
-		};
-
-		MoverLimiter.prototype.checkOutOfBounds = function () {
-			calculateBounds.call(this, this.space);
-
-			var isOut = false;
-
-			if (this.window.x <= this.bounds.left - this.window.width) {
-				this.window.x = this.bounds.left - this.window.width + 1;
-				isOut = true;
-			}
-			else if (this.window.x > this.bounds.right) {
-				this.window.x = this.bounds.right - 1;
-				isOut = true;
-			}
-			if (this.window.y < this.bounds.top) {
-				this.window.y = this.bounds.top + 1;
-				isOut = true;
-			} else if (this.window.y > this.bounds.bottom) {
-				this.window.y = this.bounds.bottom - 1;
-				isOut = true;
-			}
-
-			return isOut;
-		};
-
-		function calculateBounds(space) {
-			this.bounds = {
-				top: 0,
-				left: this.offset,
-				bottom: space.height() - this.offset,
-				right: space.width() - this.offset
-			}
-		}
-
-		return MoverLimiter;
-	});
-
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
@@ -1252,6 +1159,141 @@ function(view) {
 
 	return MoverContainer;
 });
+
+define('ventus/wm/resizer/resizerContainer',[
+		'ventus/wm/mover/moverContainer'
+],
+function(MoverContainer) {
+	
+
+	var ResizerContainer = function (space, window) {
+		MoverContainer.call(this, space, window);
+	};
+
+	ResizerContainer.prototype = Object.create(MoverContainer.prototype);
+
+
+	ResizerContainer.prototype.resize = function(w, h) {
+		this.width = w;
+		this.height = h;
+		return this;
+	};
+
+	ResizerContainer.prototype.toLocal = function(coord) {
+		return {
+			x: coord.x - this.x,
+			y: coord.y - this.y
+		};
+	};
+
+	return ResizerContainer;
+});
+
+
+define('ventus/wm/resizer/resizer',[
+	'ventus/wm/resizer/sideresizers/topResizer',
+	'ventus/wm/resizer/sideresizers/topLeftResizer',
+	'ventus/wm/resizer/sideresizers/topRightResizer',
+	'ventus/wm/resizer/sideresizers/leftResizer',
+	'ventus/wm/resizer/sideresizers/rightResizer',
+	'ventus/wm/resizer/sideresizers/bottomResizer',
+	'ventus/wm/resizer/sideresizers/bottomLeftResizer',
+	'ventus/wm/resizer/sideresizers/bottomRightResizer',
+	'ventus/wm/resizer/resizerContainer'
+],
+
+function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer,
+         BottomResizer, BottomLeftResizer, BottomRightResizer, ResizerContainer) {
+
+	var sideResizerFactory = {
+		map: {
+			'top': topResizer,
+			'top-left': TopLeftResizer,
+			'top-right': TopRightResizer,
+			'left': LeftResizer,
+			'right': RightResizer,
+			'bottom': BottomResizer,
+			'bottom-left': BottomLeftResizer,
+			'bottom-right': BottomRightResizer
+		},
+
+		getInstance: function(type, window, event) {
+			return new this.map[type](window, event);
+		}
+	};
+
+
+	var Resizer =  function (window, event, type, resizerContainer) {
+		this.window = window;
+		this.event = event;
+		this.resizerContainer = resizerContainer || new ResizerContainer(window.space, window);
+		this.resizerContainer.add();
+		this.sideResizer = sideResizerFactory.getInstance(type, this.resizerContainer, event);
+	};
+
+	Resizer.prototype.resize = function(event) {
+		return this.sideResizer.resize(event);
+	};
+
+	Resizer.prototype.endResize = function() {
+		this.window.move(this.resizerContainer.x, this.resizerContainer.y);
+		this.window.resize(this.resizerContainer.width, this.resizerContainer.height);
+
+		this.resizerContainer.remove();
+		this.resizerContainer = null;
+	};
+
+	return Resizer;
+});
+
+define('ventus/wm/mover/moverLimiter',[],
+
+	function () {
+		
+
+		var MoverLimiter = function (space, window, offset) {
+			this.space = space;
+			this.window = window;
+			this.offset = offset || 30; //px
+
+			calculateBounds.call(this, space);
+		};
+
+		MoverLimiter.prototype.checkOutOfBounds = function () {
+			calculateBounds.call(this, this.space);
+
+			var isOut = false;
+
+			if (this.window.x <= this.bounds.left - this.window.width) {
+				this.window.x = this.bounds.left - this.window.width + 1;
+				isOut = true;
+			}
+			else if (this.window.x > this.bounds.right) {
+				this.window.x = this.bounds.right - 1;
+				isOut = true;
+			}
+			if (this.window.y < this.bounds.top) {
+				this.window.y = this.bounds.top + 1;
+				isOut = true;
+			} else if (this.window.y > this.bounds.bottom) {
+				this.window.y = this.bounds.bottom - 1;
+				isOut = true;
+			}
+
+			return isOut;
+		};
+
+		function calculateBounds(space) {
+			this.bounds = {
+				top: 0,
+				left: this.offset,
+				bottom: space.height() - this.offset,
+				right: space.width() - this.offset
+			}
+		}
+
+		return MoverLimiter;
+	});
 
 
 /**
@@ -1475,7 +1517,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 					e.preventDefault();
 				},
 
-				'button.wm-resize mousedown': function(e) {
+				'button.bottom-right.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'bottom-right');
@@ -1614,16 +1656,18 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 						if(!this._resizer){
 							this.move(this.moverContainer.x, this.moverContainer.y);
+							this.moverContainer.remove();
+							this.signals.emit('move', this);
 						}
-						this.moverContainer.remove();
-						this.signals.emit('move', this);
 						this._moving = null;
 					}
 
 					if (this._resizer) {
 						this.el.removeClass('resizing');
-						this._restore = null;
+						this._resizer.endResize();
 						this._resizer = null;
+
+						this._restore = null;
 						this.signals.emit('resize', this);
 					}
 
