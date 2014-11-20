@@ -235,11 +235,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 					this._resizer = new Resizer(this, e, 'top-right');
 
-					this._moving = this.toLocal({
-						x: e.originalEvent.pageX,
-						y: e.originalEvent.pageY
-					});
-
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
@@ -249,11 +244,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'button.top-left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 					this._resizer = new Resizer(this, e, 'top-left');
-
-					this._moving = this.toLocal({
-						x: e.originalEvent.pageX,
-						y: e.originalEvent.pageY
-					});
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -266,11 +256,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 					this._resizer = new Resizer(this, e, 'bottom-left');
 
-					this._moving = this.toLocal({
-						x: e.originalEvent.pageX,
-						y: e.originalEvent.pageY
-					});
-
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
@@ -281,11 +266,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 					if(!this.enabled || !this.resizable) return;
 					this._resizer = new Resizer(this, e, 'left');
 
-					this._moving = this.toLocal({
-						x: e.originalEvent.pageX,
-						y: e.originalEvent.pageY
-					});
-
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
@@ -295,12 +275,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'top');
-
-					this._moving = this.toLocal({
-						x: e.originalEvent.pageX,
-						y: e.originalEvent.pageY
-					});
-
 
 					this.el.addClass('resizing');
 					this.addDivOverlay();
@@ -356,11 +330,9 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 							this.el.removeClass('move');
 						}
 
-						if(!this._resizer){
-							this.move(this.moverContainer.x, this.moverContainer.y);
-							this.moverContainer.remove();
-							this.signals.emit('move', this);
-						}
+						this.move(this.moverContainer.x, this.moverContainer.y);
+						this.moverContainer.remove();
+						this.signals.emit('move', this);
 						this._moving = null;
 					}
 
