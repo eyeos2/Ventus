@@ -223,80 +223,49 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'bottom-right');
-
-					this.el.addClass('resizing');
-					this.addDivOverlay();
-
-					e.preventDefault();
 				},
 
 				'button.top-right.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'top-right');
-
-					this.el.addClass('resizing');
-					this.addDivOverlay();
-
-					e.preventDefault();
 				},
 
 				'button.top-left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
+
 					this._resizer = new Resizer(this, e, 'top-left');
-
-					this.el.addClass('resizing');
-					this.addDivOverlay();
-
-					e.preventDefault();
 				},
 
 				'button.bottom-left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'bottom-left');
-
-					this.el.addClass('resizing');
-					this.addDivOverlay();
-
-					e.preventDefault();
 				},
 
 				'.wm-window-border.left.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
+
 					this._resizer = new Resizer(this, e, 'left');
-
-					this.el.addClass('resizing');
-					this.addDivOverlay();
-
-					e.preventDefault();
 				},
 				'.wm-window-border.top.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'top');
-
-					this.el.addClass('resizing');
-					this.addDivOverlay();
-
-					e.preventDefault();
 				},
 				'.wm-window-border.bottom.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'bottom');
-
-					this.el.addClass('resizing');
-					this.addDivOverlay();
-
-					e.preventDefault();
 				},
 
 				'.wm-window-border.right.wm-resize mousedown': function(e) {
 					if(!this.enabled || !this.resizable) return;
 
 					this._resizer = new Resizer(this, e, 'right');
+				},
 
+				'button.wm-resize mousedown': function(e) {
 					this.el.addClass('resizing');
 					this.addDivOverlay();
 
