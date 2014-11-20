@@ -7,10 +7,13 @@ define([
 	'ventus/wm/resizer/sideresizers/rightResizer',
 	'ventus/wm/resizer/sideresizers/bottomResizer',
 	'ventus/wm/resizer/sideresizers/bottomLeftResizer',
-	'ventus/wm/resizer/sideresizers/bottomRightResizer'
+	'ventus/wm/resizer/sideresizers/bottomRightResizer',
+	'ventus/wm/resizer/resizerContainer'
 ],
 
-function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer, BottomResizer, BottomLeftResizer, BottomRightResizer) {
+function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer,
+         BottomResizer, BottomLeftResizer, BottomRightResizer, ResizerContainer) {
+
 	var sideResizerFactory = {
 		map: {
 			'top': topResizer,
@@ -29,14 +32,24 @@ function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer,
 	};
 
 
-	var Resizer =  function (window, event, type) {
+	var Resizer =  function (window, event, type, resizerContainer) {
 		this.window = window;
 		this.event = event;
-		this.sideResizer = sideResizerFactory.getInstance(type, window, event);
+		this.resizerContainer = resizerContainer || new ResizerContainer(window.space, window);
+		this.resizerContainer.add();
+		this.sideResizer = sideResizerFactory.getInstance(type, this.resizerContainer, event);
 	};
 
 	Resizer.prototype.resize = function(event) {
 		return this.sideResizer.resize(event);
+	};
+
+	Resizer.prototype.endResize = function() {
+		this.window.move(this.resizerContainer.x, this.resizerContainer.y);
+		this.window.resize(this.resizerContainer.width, this.resizerContainer.height);
+
+		this.resizerContainer.remove();
+		this.resizerContainer = null;
 	};
 
 	return Resizer;

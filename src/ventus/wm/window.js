@@ -366,8 +366,10 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 					if (this._resizer) {
 						this.el.removeClass('resizing');
-						this._restore = null;
+						this._resizer.endResize();
 						this._resizer = null;
+
+						this._restore = null;
 						this.signals.emit('resize', this);
 					}
 
