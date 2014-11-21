@@ -1419,6 +1419,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 		slots: {
 			move: function(e) {
 				if(!this.enabled || !this.movable || this.maximized) return;
+				this.moverContainer.add();
 
 				this._moving = this.toLocal({
 					x: e.originalEvent.pageX,
@@ -1471,7 +1472,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 				'.wm-window-title mousedown': function(e) {
 					if(e.which === this.events.constants.LEFT_CLICK) {
 						this.addDivOverlay();
-						this.moverContainer.add();
 						this.slots.move.call(this, e);
 					}
 				},
