@@ -305,7 +305,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 
 						this.move(this.moverContainer.x, this.moverContainer.y);
 						this.moverContainer.remove();
-						this.signals.emit('move', this);
 						this._moving = null;
 					}
 
@@ -317,6 +316,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 						this._restore = null;
 						this.signals.emit('resize', this);
 					}
+
+					this.signals.emit('move', this);
 
 					this.removeDivOverlay();
 					e.stopPropagation();
