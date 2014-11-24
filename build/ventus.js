@@ -1365,7 +1365,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 			imageUrl: null,
 			minimize: true,
 			dontExecuteEventHandlers: false,
-			hideContentOnExpose: true
+			hideContentOnExpose: false
 		};
 		var shouldRenderImage = false;
 		if(options.imageUrl && options.imageUrl !== null) {
@@ -1441,6 +1441,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 			options.resizable :
 			true;
 		this.disableContinuousResizeEvents = options.disableContinuousResizeEvents || false;
+		this.hideContentOnExpose = options.hideContentOnExpose;
 
 		this.titlebar = true;
 	};
@@ -2011,15 +2012,19 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 		},
 
 		activateExpose: function () {
-			this.$exposeContent = View(WindowContentMessage({
-				title: this.title,
-				classname: 'expose-content'
-			}));
-			this.prepend(this.$exposeContent);
+			if(this.hideContentOnExpose) {
+				this.$exposeContent = View(WindowContentMessage({
+					title: this.title,
+					classname: 'expose-content'
+				}));
+				this.prepend(this.$exposeContent);
+			}
 		},
 
 		removeExpose: function () {
-			this.$exposeContent.remove();
+			if(this.hideContentOnExpose) {
+				this.$exposeContent.remove();
+			}
 		}
 	};
 
