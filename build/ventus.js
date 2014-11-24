@@ -1634,6 +1634,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 
 						this.move(this.moverContainer.x, this.moverContainer.y);
 						this.moverContainer.remove();
+						this.signals.emit('move', this);
 						this._moving = null;
 					}
 
@@ -1643,6 +1644,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 						this._resizer = null;
 
 						this._restore = null;
+						this.signals.emit('move', this);
 						this.signals.emit('resize', this);
 					}
 
