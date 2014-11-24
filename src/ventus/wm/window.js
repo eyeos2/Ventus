@@ -10,9 +10,10 @@ define([
 	'ventus/wm/resizer/resizer',
 	'ventus/wm/mover/moverLimiter',
 	'ventus/wm/mover/moverContainer',
+	'tpl!ventus/tpl/windowContentMessage',
 	'less!ventus/css/window'
 ],
-function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
+function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, WindowContentMessage) {
 	'use strict';
 
 	var Window = function (options, manager) {
@@ -34,7 +35,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 			tiltAnimation: true,
 			imageUrl: null,
 			minimize: true,
-			dontExecuteEventHandlers: false
+			dontExecuteEventHandlers: false,
+			hideContentOnExpose: true
 		};
 		var shouldRenderImage = false;
 		if(options.imageUrl && options.imageUrl !== null) {
@@ -79,6 +81,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 		// Cache header element
 		this.$titlebar = this.el.find('header');
+		this.title = options.title;
 
 		this.border = {
 			size: 1 //px;
@@ -672,6 +675,22 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 		append: function(el) {
 			el.appendTo(this.$content);
+		},
+
+		prepend: function(el) {
+			el.prependTo(this.$content);
+		},
+
+		activateExpose: function () {
+			this.$exposeContent = View(WindowContentMessage({
+				title: this.title,
+				classname: 'expose-content'
+			}));
+			this.prepend(this.$exposeContent);
+		},
+
+		removeExpose: function () {
+			this.$exposeContent.remove();
 		}
 	};
 

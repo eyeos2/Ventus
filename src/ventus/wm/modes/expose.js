@@ -63,6 +63,8 @@ define(['Underscore', 'less!../../../css/expose'], function(_) {
 				win.enabled = false;
 				win.movable = false;
 
+				win.activateExpose();
+
 				win.el.addClass('exposing');
 				win.el.css('transform-origin', '0 0');
 				win.el.css('transform', 'scale(' + scale + ')');
@@ -85,6 +87,7 @@ define(['Underscore', 'less!../../../css/expose'], function(_) {
 			for(var z, win, i=this.windows.length; i--;) {
 				win = this.windows[i];
 
+				win.removeExpose();
 				win.restore();
 				win.el.css('transform', 'scale(1)');
 				win.el.css('transform-origin', '50% 50%');

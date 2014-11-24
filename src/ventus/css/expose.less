@@ -1,5 +1,6 @@
 
 @import "prefix.less";
+@import "window.less";
 
 .wm-space.expose {
 	.wm-window {
@@ -18,6 +19,37 @@
 			.user-select(none);
 		}
 	}
+
+	.wm-window .expose-content {
+		background: rgba(0, 0, 0, .8);
+
+		position: absolute;
+		top: @header-height;
+
+		width: 100%;
+		height: calc(~"100% - "@header-height);
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		z-index: 1;
+
+		header h1{
+			color: #C7C7C7;
+			font-size: 30px;
+			text-align: center;
+			line-height: 1.4;
+			word-wrap: break-word;
+		}
+		section {
+			color: #C7C7C7;
+			font-size: 20px;
+			line-height: 1.4;
+			word-wrap: break-word;
+		}
+	}
+
 
 
 }

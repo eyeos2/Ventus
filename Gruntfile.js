@@ -34,7 +34,8 @@ module.exports = function (grunt) {
 					amd: true
 				},
 				files: {
-					'src/ventus/tpl/window.tpl.js': '<%= dirs.app %>/ventus/tpl/window.tpl'
+					'src/ventus/tpl/window.tpl.js': '<%= dirs.app %>/ventus/tpl/window.tpl',
+					'src/ventus/tpl/windowContentMessage.tpl.js': '<%= dirs.app %>/ventus/tpl/windowContentMessage.tpl'
 				}
 			}
 		},
