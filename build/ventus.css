@@ -629,7 +629,7 @@
   -o-user-select: none;
 }
 .wm-space.expose .wm-window .expose-content {
-  background: rgba(0, 0, 0, 0.8);
+  background: #000000;
   position: absolute;
   top: 36px;
   width: 100%;
