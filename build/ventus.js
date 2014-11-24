@@ -1295,6 +1295,37 @@ define('ventus/wm/mover/moverLimiter',[],
 		return MoverLimiter;
 	});
 
+define('ventus/tpl/windowContentMessage.tpl',['handlebars'], function(Handlebars) {
+
+this["Handlebars"] = this["Handlebars"] || {};
+this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
+
+this["Handlebars"]["templates"]["src/ventus/tpl/windowContentMessage.tpl"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"wm-content-msg ";
+  if (helper = helpers.classname) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.classname); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" >\n    <header>\n        <h1>";
+  if (helper = helpers.title) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.title); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "</h1>\n    </header>\n\n    <section> ";
+  if (helper = helpers.msg) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.msg); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + " </section>\n</div>";
+  return buffer;
+  });
+
+return this["Handlebars"]["templates"];
+
+});
+
 
 /**
  * Ventus
@@ -1308,9 +1339,10 @@ define('ventus/wm/window',[
 	'ventus/wm/resizer/resizer',
 	'ventus/wm/mover/moverLimiter',
 	'ventus/wm/mover/moverContainer',
+	'tpl!ventus/tpl/windowContentMessage',
 	'less!ventus/css/window'
 ],
-function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
+function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, WindowContentMessage) {
 	
 
 	var Window = function (options, manager) {
@@ -1332,7 +1364,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 			tiltAnimation: true,
 			imageUrl: null,
 			minimize: true,
-			dontExecuteEventHandlers: false
+			dontExecuteEventHandlers: false,
+			hideContentOnExpose: true
 		};
 		var shouldRenderImage = false;
 		if(options.imageUrl && options.imageUrl !== null) {
@@ -1377,6 +1410,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 		// Cache header element
 		this.$titlebar = this.el.find('header');
+		this.title = options.title;
 
 		this.border = {
 			size: 1 //px;
@@ -1970,6 +2004,22 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer) {
 
 		append: function(el) {
 			el.appendTo(this.$content);
+		},
+
+		prepend: function(el) {
+			el.prependTo(this.$content);
+		},
+
+		activateExpose: function () {
+			this.$exposeContent = View(WindowContentMessage({
+				title: this.title,
+				classname: 'expose-content'
+			}));
+			this.prepend(this.$exposeContent);
+		},
+
+		removeExpose: function () {
+			this.$exposeContent.remove();
 		}
 	};
 
@@ -2088,6 +2138,8 @@ define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], func
 				win.enabled = false;
 				win.movable = false;
 
+				win.activateExpose();
+
 				win.el.addClass('exposing');
 				win.el.css('transform-origin', '0 0');
 				win.el.css('transform', 'scale(' + scale + ')');
@@ -2110,6 +2162,7 @@ define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], func
 			for(var z, win, i=this.windows.length; i--;) {
 				win = this.windows[i];
 
+				win.removeExpose();
 				win.restore();
 				win.el.css('transform', 'scale(1)');
 				win.el.css('transform-origin', '50% 50%');
