@@ -1648,8 +1648,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 						this.signals.emit('resize', this);
 					}
 
-					this.signals.emit('move', this);
-
 					this.removeDivOverlay();
 					e.stopPropagation();
 				}
