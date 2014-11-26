@@ -2019,12 +2019,13 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 					classname: 'expose-content'
 				}));
 				this.prepend(this.$exposeContent);
+
 			}
 		},
 
 		removeExpose: function () {
 			if(this.hideContentOnExpose) {
-				this.$exposeContent.remove();
+				this.el.find('.expose-content').remove();
 			}
 		}
 	};
