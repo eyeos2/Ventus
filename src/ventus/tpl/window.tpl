@@ -7,7 +7,7 @@
                 {{#renderImg}}
                     <img src="{{imgUrl}}" width=16 height=16/>
                 {{/renderImg}}
-                <h1 unselectable="on">{{title}}</h1>
+                <h1 unselectable="on"><span class="wm-window-title-text">{{title}}</span></h1>
                 <div class="wm-button-group">
                     {{#minimize}}
                     <button class="wm-minimize">&nbsp;</button>

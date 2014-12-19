@@ -356,6 +356,12 @@
   font-weight: 400;
   color: #fff;
 }
+.wm-window .wm-window-box header.wm-window-title h1 .wm-window-title-text {
+  max-height: 1.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .wm-window .wm-window-box header.wm-window-title .wm-button-group {
   display: -webkit-box;
   display: -moz-box;
@@ -1059,6 +1065,12 @@
   font-size: 16px;
   font-weight: 400;
   color: #fff;
+}
+.wm-window .wm-window-box header.wm-window-title h1 .wm-window-title-text {
+  max-height: 1.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .wm-window .wm-window-box header.wm-window-title .wm-button-group {
   display: -webkit-box;
