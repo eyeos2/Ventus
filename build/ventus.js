@@ -2339,6 +2339,18 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 				self.active.events.space.mouseup.call(self.active, e);
 			}
 		});
+
+		$(document).click(function(e){
+			if(self.active){
+				var activeWindowElem = self.active.el;
+
+				if (!activeWindowElem.is(e.target) // if the target of the click isn't the activeWindowElem...
+					&& activeWindowElem.has(e.target).length === 0) // ... nor a descendant of the activeWindowElem
+				{
+					self.active.blur();
+				}
+			}
+		});
 	};
 
 	WindowManager.prototype = {
