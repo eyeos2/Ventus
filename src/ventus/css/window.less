@@ -25,41 +25,38 @@
 /* Appear animation */
 
 @-webkit-keyframes appear {
-	0% {.transform(scale(0,0));}
-	80% {.transform(scale(1.2, 1.2));}
-	100% {.transform(rotate(1,1));}
+	0% {.transform(scale(.95,.95) translateY(.8rem));opacity: 0;}
+	100% {.transform(scale(1,1) translateY(0));opacity: 1;}
 }
 
 @-moz-keyframes appear {
-	0% {.transform(scale(0,0));}
-	80% {.transform(scale(1.2, 1.2));}
-	100% {.transform(rotate(1,1));}
+	0% {.transform(scale(.95,.95)  translateY(.8rem));opacity: 0;}
+	100% {.transform(scale(1,1) translateY(0));opacity: 1;}
 }
 
 @keyframes appear {
-	0% {.transform(scale(0,0));}
-	80% {.transform(scale(1.2, 1.2));}
-	100% {.transform(rotate(1,1));}
+	0% {.transform(scale(.95,.95)  translateY(.8rem));opacity: 0;}
+	100% {.transform(scale(1,1) translateY(0));opacity: 1;}
 }
 
 /* Close animation */
 
 @-webkit-keyframes close {
-	0% {.transform(scale(1,1));}
-	20% {.transform(scale(1.2, 1.2));}
-	100% {.transform(scale(0,0));}
+	0% {.transform(scale(1,1) );opacity: 1;}
+	//20% {.transform(scale(1.2, 1.2));}
+	100% {.transform(scale(.9,.9) ); opacity: 0;}
 }
 
 @-moz-keyframes close {
-	0% {.transform(scale(1,1));}
-	20% {.transform(scale(1.2, 1.2));}
-	100% {.transform(scale(0,0));}
+	0% {.transform(scale(1,1)); opacity: 0;}
+	//20% {.transform(scale(1.2, 1.2));}
+	100% {.transform(scale(0,0)); opacity: 0;}
 }
 
 @keyframes close {
-	0% {.transform(scale(1,1));}
-	20% {.transform(scale(1.2, 1.2));}
-	100% {.transform(scale(0,0));}
+	0% {.transform(scale(1,1));opacity: 0;}
+	//20% {.transform(scale(1.2, 1.2));}
+	100% {.transform(scale(0,0)); opacity: 0;}
 }
 
 
@@ -380,11 +377,13 @@
 }
 
 .wm-window.closing {
-	.animation(close 0.3s 1 ease-in forwards);
+	.animation(close 0.2s 1 forwards);
+	transition-timing-function: cubic-bezier(0.090, 0.600, 0.275, 0.975); /* custom */
 }
 
 .wm-window.opening {
-	.animation(appear 0.4s 1 ease-out forwards);
+	.animation(appear 0.3s 1 forwards);
+        transition-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000); /* easeOutCirc */
 }
 
 .wm-window.resizing {
@@ -392,7 +391,7 @@
 }
 
 .wm-window.move {
-	.animation(wobbly 0.5s 0.2s infinite);
+	//.animation(wobbly 0.5s 0.2s infinite);
 
 	* {
 		.user-select(none);
