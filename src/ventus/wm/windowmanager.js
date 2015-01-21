@@ -192,20 +192,15 @@ define(function(require) {
 		 * Internal action always performed besides the mode definition
 		 */
 		_focus: function(win) {
-			var currentZ,
-				baseZ = 10000,
-				maxZ = baseZ + 10000,
+			var baseZ = 10000,
 				index;
 
 			if (this.active && this.active === win)
 				return;
 
 			if(this.active) {
-				currentZ = this.active.z;
+				this.active.z = baseZ;
 				this.active.blur();
-			}
-			else {
-				currentZ = baseZ;
 			}
 
 			// Reorder windows stack (@todo optimize this)
@@ -213,15 +208,7 @@ define(function(require) {
 			this.windows.splice(index, 1); // Remove from array
 			this.windows.push(win);
 
-			win.z = currentZ + 1;
-
-			// Refresh z-indexes just every 'maxZ' activations
-			if (currentZ > maxZ + this.windows.length) {
-				for(var z, i=this.windows.length; i--;) {
-					z = this.windows[i].z;
-					this.windows[i].z = baseZ + (z - maxZ);
-				}
-			}
+			win.z = baseZ + 1;
 
 			this.active = win;
 		},
