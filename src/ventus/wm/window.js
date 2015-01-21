@@ -204,8 +204,18 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 					e.stopPropagation();
 					e.preventDefault();
 
-					if(this.enabled && this.resizable)
-						this.maximize();
+					if(this.enabled && this.resizable) {
+						if (this.el.minimize) {
+							this.maximize();
+						} else {
+							if (this.minimized) {
+								this.minimize();
+							} else {
+								this.maximize();
+							}
+						}
+					}
+
 				},
 
 				'.wm-window-title button.wm-minimize click': function(e) {
@@ -625,6 +635,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 		},
 
 		maximize: function(maximized) {
+			console.log("win.maximize");
 			this.el.addClass('maximazing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('maximazing');
@@ -636,6 +647,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 		},
 
 		minimize: function() {
+			console.log("win.minimize");
 			this.el.addClass('minimizing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('minimizing');
