@@ -68,9 +68,7 @@ define(function(require) {
 				if (!activeWindowElem.is(e.target) // if the target of the click isn't the activeWindowElem...
 					&& activeWindowElem.has(e.target).length === 0) // ... nor a descendant of the activeWindowElem
 				{
-					var copyOfActiveWin = self.active;
 					self.active.blur();
-					copyOfActiveWin.z = self.baseZIndex + 1;
 				}
 			}
 		});
@@ -211,7 +209,9 @@ define(function(require) {
 			this.windows.splice(index, 1); // Remove from array
 			this.windows.push(win);
 
-			win.z = this.baseZIndex + 1;
+			for(var i=this.windows.length; i--;){
+				this.windows[i].z = this.baseZIndex + i;
+			}
 
 			this.active = win;
 		},
@@ -221,7 +221,6 @@ define(function(require) {
 		 */
 		_blur: function(win) {
 			if(this.active === win){
-				this.active.z = this.baseZIndex;
 				this.active = null;
 			}
 		},
