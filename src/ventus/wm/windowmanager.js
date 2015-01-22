@@ -61,7 +61,8 @@ define(function(require) {
 		});
 
 		$(document).click(function(e){
-			if(self.active){
+			var $focusableElement = $('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]');
+			if($(e.target).is($focusableElement) && self.active){
 				var activeWindowElem = self.active.el;
 
 				if (!activeWindowElem.is(e.target) // if the target of the click isn't the activeWindowElem...
