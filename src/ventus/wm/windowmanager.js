@@ -43,7 +43,7 @@ define(function(require) {
 
 		this.windows = [];
 		this.active = null;
-		this.baseZIndex = 10000;
+		this.baseZIndex = 10;
 
 		this.mode = 'default';
 
