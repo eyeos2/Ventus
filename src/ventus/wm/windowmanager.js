@@ -22,7 +22,7 @@ define(function(require) {
 		this.$overlay = view('<div class="wm-overlay" />');
 		$baseElem.prepend(this.$overlay);
 
-		this.$overlay.css('z-index', this._baseZ-1);
+		this.$overlay.css('z-index', this.baseZIndex-1);
 
 		// Generate mode plugin actions wrapper
 		this.actions.forEach(function(value){
@@ -43,6 +43,7 @@ define(function(require) {
 
 		this.windows = [];
 		this.active = null;
+		this.baseZIndex = 10000;
 
 		this.mode = 'default';
 
@@ -192,14 +193,13 @@ define(function(require) {
 		 * Internal action always performed besides the mode definition
 		 */
 		_focus: function(win) {
-			var baseZ = 10000,
-				index;
+			var index;
 
 			if (this.active && this.active === win)
 				return;
 
 			if(this.active) {
-				this.active.z = baseZ;
+				this.active.z = this.baseZIndex;
 				this.active.blur();
 			}
 
@@ -208,7 +208,7 @@ define(function(require) {
 			this.windows.splice(index, 1); // Remove from array
 			this.windows.push(win);
 
-			win.z = baseZ + 1;
+			win.z = this.baseZIndex + 1;
 
 			this.active = win;
 		},
@@ -217,8 +217,10 @@ define(function(require) {
 		 * Internal action always performed besides the mode definition
 		 */
 		_blur: function(win) {
-			if(this.active === win)
+			if(this.active === win){
+				this.active.z = this.baseZIndex;
 				this.active = null;
+			}
 		},
 
 		/**
