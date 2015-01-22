@@ -1533,9 +1533,8 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 					e.stopPropagation();
 					e.preventDefault();
 
-					console.log(this.maximized, this.minimized);
 					if(this.enabled && this.resizable) {
-						if ($(".wm-minimize").is(":visible")) {
+						if (this.el.minimize) {
 							this.maximize();
 						} else {
 							if (this.minimized) {
@@ -1965,7 +1964,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 		},
 
 		maximize: function(maximized) {
-			console.log("win.maximize");
 			this.el.addClass('maximazing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('maximazing');
@@ -1977,7 +1975,6 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 		},
 
 		minimize: function() {
-			console.log("win.minimize");
 			this.el.addClass('minimizing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('minimizing');
@@ -2316,7 +2313,7 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 		this.$overlay = view('<div class="wm-overlay" />');
 		$baseElem.prepend(this.$overlay);
 
-		this.$overlay.css('z-index', this._baseZ-1);
+		this.$overlay.css('z-index', this.baseZIndex-1);
 
 		// Generate mode plugin actions wrapper
 		this.actions.forEach(function(value){
@@ -2337,6 +2334,7 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 
 		this.windows = [];
 		this.active = null;
+		this.baseZIndex = 10000;
 
 		this.mode = 'default';
 
@@ -2354,7 +2352,8 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 		});
 
 		$(document).click(function(e){
-			if(self.active){
+			var $focusableElement = $('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]');
+			if($(e.target).is($focusableElement) && self.active){
 				var activeWindowElem = self.active.el;
 
 				if (!activeWindowElem.is(e.target) // if the target of the click isn't the activeWindowElem...
@@ -2486,20 +2485,14 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 		 * Internal action always performed besides the mode definition
 		 */
 		_focus: function(win) {
-			var currentZ,
-				baseZ = 10000,
-				maxZ = baseZ + 10000,
-				index;
+			var index;
 
 			if (this.active && this.active === win)
 				return;
 
 			if(this.active) {
-				currentZ = this.active.z;
+				this.active.z = this.baseZIndex;
 				this.active.blur();
-			}
-			else {
-				currentZ = baseZ;
 			}
 
 			// Reorder windows stack (@todo optimize this)
@@ -2507,15 +2500,7 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 			this.windows.splice(index, 1); // Remove from array
 			this.windows.push(win);
 
-			win.z = currentZ + 1;
-
-			// Refresh z-indexes just every 'maxZ' activations
-			if (currentZ > maxZ + this.windows.length) {
-				for(var z, i=this.windows.length; i--;) {
-					z = this.windows[i].z;
-					this.windows[i].z = baseZ + (z - maxZ);
-				}
-			}
+			win.z = this.baseZIndex + 1;
 
 			this.active = win;
 		},
@@ -2524,8 +2509,10 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 		 * Internal action always performed besides the mode definition
 		 */
 		_blur: function(win) {
-			if(this.active === win)
+			if(this.active === win){
+				this.active.z = this.baseZIndex;
 				this.active = null;
+			}
 		},
 
 		/**
