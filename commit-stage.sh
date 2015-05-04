@@ -16,6 +16,8 @@ then
     git checkout master
 
     bower version patch -m "Upgraded version to %s"
+    grunt build
+    git add .
     git push origin master
     git push --tags
     echo "commit_id=$(git rev-parse HEAD)" > commit.properties
