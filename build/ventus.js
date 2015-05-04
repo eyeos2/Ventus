@@ -372,7 +372,7 @@ define("almond", function(){});
  */
 
 (function(root) {
-	
+	'use strict';
 
 	function equals(slot, scope, expected) {
 		return function(item) {
@@ -1082,7 +1082,7 @@ define('ventus/wm/mover/moverContainer',[
 		'less!ventus/css/movercontainer'
 ],
 function(view) {
-	
+	'use strict';
 
 	var MoverContainer = function (space, window) {
 		this.window = window;
@@ -1164,7 +1164,7 @@ define('ventus/wm/resizer/resizerContainer',[
 		'ventus/wm/mover/moverContainer'
 ],
 function(MoverContainer) {
-	
+	'use strict';
 
 	var ResizerContainer = function (space, window) {
 		MoverContainer.call(this, space, window);
@@ -1249,7 +1249,7 @@ function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer,
 define('ventus/wm/mover/moverLimiter',[],
 
 	function () {
-		
+		'use strict';
 
 		var MoverLimiter = function (space, window, offset) {
 			this.space = space;
@@ -1343,7 +1343,7 @@ define('ventus/wm/window',[
 	'less!ventus/css/window'
 ],
 function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, WindowContentMessage) {
-	
+	'use strict';
 
 	var Window = function (options, manager) {
 		this.signals = new Emitter();
@@ -2096,7 +2096,7 @@ define("Underscore", (function (global) {
  * https://github.com/rlamana
  */
 define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], function(_) {
-	
+	'use strict';
 
 	var ExposeMode = {
 
@@ -2225,7 +2225,7 @@ define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], func
  * https://github.com/rlamana
  */
 define('ventus/wm/modes/fullscreen',['less!../../../css/fullscreen'], function() {
-	
+	'use strict';
 
 	var FullscreenMode = {
 
@@ -2295,7 +2295,7 @@ define('ventus/wm/modes/fullscreen',['less!../../../css/fullscreen'], function()
  * https://github.com/rlamana
  */
 define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/view','ventus/wm/modes/default','ventus/wm/modes/expose','ventus/wm/modes/fullscreen'],function(require) {
-	
+	'use strict';
 
 	var $ = require('$');
 	var Window = require('ventus/wm/window');
@@ -2380,7 +2380,7 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 
 		modes: {
 			'default': DefaultMode,
-			'expose': ExposeMode,
+			//'expose': ExposeMode,
 			'fullscreen': FullscreenMode
 		},
 
@@ -2556,7 +2556,7 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
  * https://github.com/rlamana
  */
 define('ventus',['require','ventus/wm/windowmanager','ventus/wm/window'],function(require) {
-	
+	'use strict';
 
 	return {
 		version: '0.1',

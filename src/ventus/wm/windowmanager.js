@@ -89,7 +89,7 @@ define(function(require) {
 
 		modes: {
 			'default': DefaultMode,
-			'expose': ExposeMode,
+			//'expose': ExposeMode,
 			'fullscreen': FullscreenMode
 		},
 
