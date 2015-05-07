@@ -14,6 +14,9 @@
                     {{/minimize}}
                     <button class="wm-maximize">&nbsp;</button>
                     <button class="wm-close">&nbsp;</button>
+                    {{#detach}}
+                    <button class="wm-detach">&nbsp;</button>
+                    {{/detach}}
                 </div>
             </header>
 

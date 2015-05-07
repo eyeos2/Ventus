@@ -35,6 +35,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 			tiltAnimation: true,
 			imageUrl: null,
 			minimize: true,
+			detach: false,
 			dontExecuteEventHandlers: false,
 			hideContentOnExpose: false
 		};
@@ -56,6 +57,7 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 			title: options.title,
 			imgUrl: options.imageUrl,
 			minimize: options.minimize,
+			detach: options.detach,
 			renderImg: shouldRenderImage,
 			classname: options.classname||''
 		}));
@@ -224,6 +226,14 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 
 					if(this.enabled)
 						this.minimize();
+				},
+
+				'.wm-window-title button.wm-detach click': function (e) {
+					e.stopPropagation();
+					e.preventDefault();
+
+					if (this.enabled)
+						this.signals.emit('detach', this);
 				},
 
 				'.wm-window-title button mousedown': function(e) {
