@@ -17,7 +17,7 @@ then
 
     grunt build
     git add .
-    git add build
+    git add -f build
     bower version patch -m "Upgraded version to %s"
     git push origin master
     git push --tags
