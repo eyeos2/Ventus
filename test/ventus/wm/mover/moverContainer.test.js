@@ -11,7 +11,9 @@ define([
 					y: 50,
 					z: 1003,
 					width: 400,
-					height: 700
+					height: 700,
+					minWidth: 200,
+					minHeight: 300
 				};
 				space = {
 					append: function () {}
@@ -44,6 +46,12 @@ define([
 					exercise();
 					assert.equal(sut.width, window.width);
 					assert.equal(sut.height, window.height);
+				}));
+
+				test('should set the min sizes of the view to the same size than the window', sinon.test(function () {
+					exercise();
+					assert.equal(sut.minWidth, window.minWidth);
+					assert.equal(sut.minHeight, window.minHeight);
 				}));
 
 
