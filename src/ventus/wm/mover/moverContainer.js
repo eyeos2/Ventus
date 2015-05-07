@@ -62,7 +62,7 @@ function(view) {
 		this.space.append(this.el);
 		this.x = this.window.x;
 		this.y = this.window.y;
-		this.z = this.window.z;
+		this.z = this.window.z + 1;
 
 		this.width = this.window.width;
 		this.height = this.window.height;

@@ -37,7 +37,7 @@ define([
 					exercise();
 					assert.equal(sut.x, window.x);
 					assert.equal(sut.y, window.y);
-					assert.equal(sut.z, window.z);
+					assert.equal(sut.z, window.z+1);
 				}));
 
 				test('should set the size of the view to the same size than the window', sinon.test(function () {
