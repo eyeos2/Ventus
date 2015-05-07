@@ -1091,6 +1091,9 @@ function(view) {
 
 		this.width =  null;
 		this.height =  null;
+		this.minWidth = null;
+		this.minHeight = null;
+
 		this.x =  null;
 		this.y =  null;
 		this.z =  null;
@@ -1121,6 +1124,10 @@ function(view) {
 		},
 
 		set width(value) {
+			if (this.minWidth && value < this.minWidth) {
+				value = this.minWidth;
+			}
+
 			this.el.width(value);
 		},
 
@@ -1129,6 +1136,10 @@ function(view) {
 		},
 
 		set height(value) {
+			if (this.minHeight && value < this.minHeight) {
+				value = this.minHeight;
+			}
+
 			this.el.height(value);
 		},
 
@@ -1145,6 +1156,9 @@ function(view) {
 
 		this.width = this.window.width;
 		this.height = this.window.height;
+
+		this.minWidth = this.window.minWidth;
+		this.minHeight = this.window.minHeight;
 	};
 
 	MoverContainer.prototype.remove = function () {
