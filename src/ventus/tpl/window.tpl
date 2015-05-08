@@ -13,10 +13,10 @@
                     <button class="wm-minimize">&nbsp;</button>
                     {{/minimize}}
                     <button class="wm-maximize">&nbsp;</button>
-                    <button class="wm-close">&nbsp;</button>
                     {{#detach}}
                     <button class="wm-detach">&nbsp;</button>
                     {{/detach}}
+                    <button class="wm-close">&nbsp;</button>
                 </div>
             </header>
 
