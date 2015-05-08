@@ -4,6 +4,13 @@ set -e
 set -u
 set -x
 
+
+function getNumberOfFilesStaged {
+    echo $(git diff --cached --numstat | wc -l);
+}
+
+
+
 npm install
 bower install 
 grunt test
@@ -18,9 +25,15 @@ then
     grunt build
     git add .
     git add -f build
-    git commit -m "Generated build"
-    bower version patch -m "Upgraded version to %s"
-    git push origin master
-    git push --tags
-    echo "commit_id=$(git rev-parse HEAD)" > commit.properties
+
+    if [ $(getNumberOfFilesStaged) -eq 1 ]
+
+    then
+        git commit -m "Generated build"
+        bower version patch -m "Upgraded version to %s"
+        git push origin master
+        git push --tags
+        echo "commit_id=$(git rev-parse HEAD)" > commit.properties
+    fi
+
 fi
