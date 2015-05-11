@@ -256,5 +256,11 @@ define(function(require) {
 		return this.createWindow(options);
 	};
 
+	WindowManager.prototype.onDesktopResized = function (desktopWidth, desktopHeight) {
+		for(var i = 0; i < this.windows.length; i++) {
+			this.windows[i].resizeMaximizedWindowsToContent(desktopWidth, desktopHeight);
+		}
+	};
+
 	return WindowManager;
 });

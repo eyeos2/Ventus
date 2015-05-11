@@ -607,6 +607,12 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 			return this.resize(windowWidth, windowHeight);
 		},
 
+		resizeMaximizedWindowsToContent: function(desktopWidth, desktopHeight) {
+			if(this.maximized) {
+				this.resize(desktopWidth, desktopHeight);
+			}
+		},
+
 
 		move: function(x, y) {
 			this.x = x;
