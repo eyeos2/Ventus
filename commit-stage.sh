@@ -26,7 +26,7 @@ then
     git add .
     git add -f build
 
-    if [ $(getNumberOfFilesStaged) -eq 1 ]
+    if [ $(getNumberOfFilesStaged) -ne 0 ]
 
     then
         git commit -m "Generated build"
