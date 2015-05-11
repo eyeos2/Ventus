@@ -24,7 +24,8 @@ require.config({
 		'text': './src/plugins/text',
 
 		'$': './vendor/jquery',
-		'Underscore': './vendor/underscore'
+		'Underscore': './vendor/underscore',
+		'handlebars': './bower_components/handlebars/handlebars'
 	},
 
 	shim: {
@@ -33,11 +34,14 @@ require.config({
 		},
 		'$': {
 			exports: '$'
+		},
+		'handlebars': {
+			exports: 'Handlebars'
 		}
 	},
 
-	include: ['almond', 'ventus'],
-	exclude: ['$', 'handlebars'],
+	include: ['almond', 'ventus', 'handlebars'],
+	exclude: ['$'],
 
 	// dynamically load all test files
 	deps: allTestFiles,

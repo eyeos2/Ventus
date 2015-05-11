@@ -24,7 +24,10 @@ module.exports = function (config) {
 		// list of files / patterns to load in the browser
 		files: [
 			'test/mocha.conf.js',
-			{pattern: 'vendor/**/*.js', included: false},
+			'bower_components/handlebars/handlebars.js',
+			'vendor/require.js',
+			'vendor/jquery.js',
+			'vendor/underscore.js',
 			{pattern: 'src/**/*.js', included: false},
 			{pattern: 'test/**/*.test.js', included: false},
 			'test/test-main.js'
@@ -46,7 +49,6 @@ module.exports = function (config) {
 		// list of files / patterns to exclude
 		exclude: [
 			'build/**/*.js',
-			'vendor/require.js',
 			'src/ventus.js',
 			'src/wrap.end',
 			'src/wrap.start'
