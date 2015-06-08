@@ -709,6 +709,15 @@ function(Emitter, View, WindowTemplate, Resizer, MoverLimiter, MoverContainer, W
 			el.prependTo(this.$content);
 		},
 
+		removeContent: function () {
+			this.$content.html('');
+		},
+
+		replaceContent: function (el) {
+			this.removeContent();
+			this.append(el);
+		},
+
 		activateExpose: function () {
 			if(this.hideContentOnExpose) {
 				this.$exposeContent = View(WindowContentMessage({

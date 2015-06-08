@@ -47,6 +47,31 @@ define([
 						assert.equal(sut.height, originalHeight);
 					}));
 				});
+
+				suite('replaceContent', function(){
+					var newContent, oldContent;
+
+					setup(function() {
+						newContent = $('<div>my new content</div>');
+						oldContent = $('<div>my old content</div>');
+						sut.$content.append(oldContent);
+					});
+
+					function exerciceReplaceContent(el) {
+						sut.replaceContent(el);
+					}
+
+					test('should add provided content to current content', sinon.test(function(){
+						exerciceReplaceContent(newContent);
+						assert.deepEqual(sut.$content.find(newContent)[0], newContent[0]);
+					}));
+
+
+					test('should remove oldcontent from current content', sinon.test(function(){
+						exerciceReplaceContent(newContent);
+						assert.notEqual(sut.$content.find(oldContent)[0], oldContent[0]);
+					}));
+				});
 			});
 
 
