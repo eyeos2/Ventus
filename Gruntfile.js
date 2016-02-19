@@ -1,4 +1,6 @@
 module.exports = function (grunt) {
+	require("eyeos-gruntfile")(grunt, "builder-utils");
+
 	'use strict';
 	// Load grunt tasks automatically
 	require('load-grunt-tasks')(grunt);
@@ -130,7 +132,5 @@ module.exports = function (grunt) {
 			grunt.task.run('requirejs:'+target); //release or debug
 		}
 	});
-
-
 };
 
