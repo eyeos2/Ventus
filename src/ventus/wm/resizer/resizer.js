@@ -38,6 +38,7 @@ function(topResizer, TopLeftResizer, TopRightResizer, LeftResizer, RightResizer,
 		this.resizerContainer = resizerContainer || new ResizerContainer(window.space, window);
 		this.resizerContainer.add();
 		this.sideResizer = sideResizerFactory.getInstance(type, this.resizerContainer, event);
+		this.window.signals.emit('resizeStart');
 	};
 
 	Resizer.prototype.resize = function(event) {

@@ -18,7 +18,10 @@ define([
 					width: 400,
 					height: 700,
 					move: function (){},
-					resize: function (){}
+					resize: function (){},
+					signals: {
+						emit : function() {}
+					}
 				};
 				event = {
 					originalEvent: {
